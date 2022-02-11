@@ -1,6 +1,7 @@
 package habilitPro;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Usuario {
 
@@ -9,9 +10,9 @@ public class Usuario {
     private String CPF;
     private String email;
     private String senha;
-    private ArrayList<Perfil> perfil;
+    private List<Perfil> perfil;
 
-    public Usuario(int idUsuario, String nome, String CPF, String email, String senha, ArrayList<Perfil> perfil) {
+    public Usuario(int idUsuario, String nome, String CPF, String email, String senha, List<Perfil> perfil) {
         this.idUsuario = idUsuario;
         this.nome = nome;
         this.CPF = CPF;
@@ -60,11 +61,11 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public ArrayList<Perfil> getPerfil() {
+    public List<Perfil> getPerfil() {
         return perfil;
     }
 
-    public void setPerfil(ArrayList<Perfil> perfil) {
+    public void setPerfil(List<Perfil> perfil) {
         this.perfil = perfil;
     }
 

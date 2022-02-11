@@ -1,6 +1,7 @@
 package habilitPro;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Trilha {
 
@@ -9,11 +10,11 @@ public class Trilha {
     private String ocupacao;
     private String nome;
     private String apelido;
-    private ArrayList<Modulo> modulos;
+    private List<Modulo> modulos;
     private String satisfacao;
     private String anotacoes;
 
-    public Trilha(int idTrilha, Empresa nomneEmpresa, String ocupacao, String nome, String apelido, ArrayList<Modulo> modulos, String satisfacao, String anotacoes) {
+    public Trilha(int idTrilha, Empresa nomneEmpresa, String ocupacao, String nome, String apelido, List<Modulo> modulos, String satisfacao, String anotacoes) {
         this.idTrilha = idTrilha;
         this.nomneEmpresa = nomneEmpresa;
         this.ocupacao = ocupacao;
@@ -64,11 +65,11 @@ public class Trilha {
         this.apelido = apelido;
     }
 
-    public ArrayList<Modulo> getModulos() {
+    public List<Modulo> getModulos() {
         return modulos;
     }
 
-    public void setModulos(ArrayList<Modulo> modulos) {
+    public void setModulos(List<Modulo> modulos) {
         this.modulos = modulos;
     }
 

@@ -1,6 +1,7 @@
 package habilitPro;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Empresa {
 
@@ -11,9 +12,9 @@ public class Empresa {
     private SegmentoEmpresa segmentoEmpresa;
     private Cidade cidadeEmpresa;
     private RegionalSenai regionalSenai;
-    private ArrayList<Trilha> trilha;
+    private List<Trilha> trilha;
 
-    public Empresa(int idEmpresa, String nomeEmpresa, String cnpjEmpresa, String tipoEmpresa, SegmentoEmpresa segmentoEmpresa, Cidade cidadeEmpresa, RegionalSenai regionalSenai, ArrayList<Trilha> trilha) {
+    public Empresa(int idEmpresa, String nomeEmpresa, String cnpjEmpresa, String tipoEmpresa, SegmentoEmpresa segmentoEmpresa, Cidade cidadeEmpresa, RegionalSenai regionalSenai, List<Trilha> trilha) {
         this.idEmpresa = idEmpresa;
         this.nomeEmpresa = nomeEmpresa;
         CNPJEmpresa = cnpjEmpresa;

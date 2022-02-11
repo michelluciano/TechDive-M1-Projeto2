@@ -2,6 +2,7 @@ package habilitPro;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Trabalhador {
 
@@ -11,8 +12,8 @@ public class Trabalhador {
     private ArrayList<Empresa> empresa;
     private String funcao;
     private Date dataFuncao;
-    private ArrayList<Trilha> trilhas;
-    private ArrayList<Modulo> modulos;
+    private List<Trilha> trilhas;
+    private List<Modulo> modulos;
 
 
 

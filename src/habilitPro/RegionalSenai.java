@@ -1,17 +1,18 @@
 package habilitPro;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RegionalSenai {
 
     private int idRegionalSenai;
     private String descRegionalSenai;
-    private ArrayList<Cidade> cidadeRegionalSenai;
+    private List<Cidade> cidadeRegionalSenai;
 
     public RegionalSenai() {
     }
 
-    public RegionalSenai(int idRegionalSenai, String descRegionalSenai, ArrayList<Cidade> cidadeRegionalSenai) {
+    public RegionalSenai(int idRegionalSenai, String descRegionalSenai, List<Cidade> cidadeRegionalSenai) {
         this.idRegionalSenai = idRegionalSenai;
         this.descRegionalSenai = descRegionalSenai;
         this.cidadeRegionalSenai = cidadeRegionalSenai;
@@ -33,11 +34,11 @@ public class RegionalSenai {
         this.descRegionalSenai = descRegionalSenai;
     }
 
-    public ArrayList<Cidade> getCidadeRegionalSenai() {
+    public List<Cidade> getCidadeRegionalSenai() {
         return cidadeRegionalSenai;
     }
 
-    public void setCidadeRegionalSenai(ArrayList<Cidade> cidadeRegionalSenai) {
+    public void setCidadeRegionalSenai(List<Cidade> cidadeRegionalSenai) {
         this.cidadeRegionalSenai = cidadeRegionalSenai;
     }
 
