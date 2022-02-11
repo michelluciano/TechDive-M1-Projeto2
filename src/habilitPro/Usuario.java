@@ -1,0 +1,82 @@
+package habilitPro;
+
+import java.util.ArrayList;
+
+public class Usuario {
+
+    private int idUsuario;
+    private String nome;
+    private String CPF;
+    private String email;
+    private String senha;
+    private ArrayList<Perfil> perfil;
+
+    public Usuario(int idUsuario, String nome, String CPF, String email, String senha, ArrayList<Perfil> perfil) {
+        this.idUsuario = idUsuario;
+        this.nome = nome;
+        this.CPF = CPF;
+        this.email = email;
+        this.senha = senha;
+        this.perfil = perfil;
+    }
+
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getCPF() {
+        return CPF;
+    }
+
+    public void setCPF(String CPF) {
+        this.CPF = CPF;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public ArrayList<Perfil> getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(ArrayList<Perfil> perfil) {
+        this.perfil = perfil;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "idUsuario=" + idUsuario +
+                ", nome='" + nome + '\'' +
+                ", CPF='" + CPF + '\'' +
+                ", email='" + email + '\'' +
+                ", senha='" + senha + '\'' +
+                ", perfil=" + perfil +
+                '}';
+    }
+}

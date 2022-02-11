@@ -11,17 +11,22 @@ public class main {
 
         // TESTAR CNPJ
         Scanner ler = new Scanner(System.in);
-
-        String CNPJ; // CNPJ VALIDO = 14572457000185
-
+        String CNPJ = "14572457000185";
         System.out.printf("Informe um CNPJ: ");
-        CNPJ = ler.next();
+        System.out.println("O CNPJ informado foi "+CNPJ);;
 
         System.out.printf("\nResultado: ");
         // usando os métodos isCNPJ() e imprimeCNPJ() da classe "ValidaCNPJ"
         if (ValidaCNPJ.isCNPJ(CNPJ) == true)
             System.out.printf("%s\n", ValidaCNPJ.imprimeCNPJ(CNPJ));
         else System.out.printf("Erro, CNPJ inválido !!!\n");
+
+        //Popular tabela Estado
+        // popular tabela Cidade
+        // popular tabela segmentoEmpresa
+        // popular tabela regionalSenai
+
+
     }// FIM MAIN
 
 }//FIM CLASSE MAIN

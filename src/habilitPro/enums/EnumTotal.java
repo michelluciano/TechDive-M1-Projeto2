@@ -16,8 +16,20 @@ public enum EnumTotal implements StringValueEnum{
 
     //ENUM TIPO EMPRESA
     MATRIZ("MATRIZ","Matriz"),
-    FILIAL("FILIAL", "Filial");
+    FILIAL("FILIAL", "Filial"),
 
+    //ENUM SATISFACAO
+    SATISFACAO1("1","Satisfação 1"),
+    SATISFACAO2("2","Satisfação 2"),
+    SATISFACAO3("3","Satisfação 3"),
+    SATISFACAO4("4","Satisfação 4"),
+    SATISFACAO5("5","Satisfação 5"),
+
+    //ENUM MÒDULO
+    NAOINICIADO("NAOINICIADO", "Curso não iniciado"),
+    EMANDAMENTO("EMANDAMENTO", "Curso em andamento"),
+    FASEAVALIACAO("FASEAVALIACAO", "Em fase de valiação"),
+    AVALIACAOFINALIZADA("AVALIACAOFINALIZADA", "Fase de avaliação finalizada");
 
 
 //    MADEIRAEMOVEIS(value, displayName),

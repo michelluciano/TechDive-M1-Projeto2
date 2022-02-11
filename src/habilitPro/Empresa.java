@@ -11,9 +11,9 @@ public class Empresa {
     private SegmentoEmpresa segmentoEmpresa;
     private Cidade cidadeEmpresa;
     private RegionalSenai regionalSenai;
-    private ArrayList<trilha> trilha;
+    private ArrayList<Trilha> trilha;
 
-    public Empresa(int idEmpresa, String nomeEmpresa, String cnpjEmpresa, String tipoEmpresa, SegmentoEmpresa segmentoEmpresa, Cidade cidadeEmpresa, RegionalSenai regionalSenai, ArrayList<habilitPro.trilha> trilha) {
+    public Empresa(int idEmpresa, String nomeEmpresa, String cnpjEmpresa, String tipoEmpresa, SegmentoEmpresa segmentoEmpresa, Cidade cidadeEmpresa, RegionalSenai regionalSenai, ArrayList<Trilha> trilha) {
         this.idEmpresa = idEmpresa;
         this.nomeEmpresa = nomeEmpresa;
         CNPJEmpresa = cnpjEmpresa;
