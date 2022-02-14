@@ -10,9 +10,11 @@ public class Usuario {
     private String CPF;
     private String email;
     private String senha;
-    private List<Perfil> perfil;
+    private Perfil perfil;
+    public static int serialUsuario =0;
 
-    public Usuario(int idUsuario, String nome, String CPF, String email, String senha, List<Perfil> perfil) {
+
+    public Usuario(int idUsuario, String nome, String CPF, String email, String senha, Perfil perfil) {
         this.idUsuario = idUsuario;
         this.nome = nome;
         this.CPF = CPF;
@@ -61,11 +63,11 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public List<Perfil> getPerfil() {
+    public Perfil getPerfil() {
         return perfil;
     }
 
-    public void setPerfil(List<Perfil> perfil) {
+    public void setPerfil(Perfil perfil) {
         this.perfil = perfil;
     }
 

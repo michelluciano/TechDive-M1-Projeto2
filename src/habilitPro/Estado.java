@@ -1,5 +1,6 @@
 package habilitPro;
 
+import javax.swing.text.html.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,14 +8,34 @@ public class Estado {
     private int idEstado;
     private String descEstado;
     private String ufEstado;
-    private List<Cidade> cidade;
+    public static int serialEstado =0;
 
-    public Estado(int idEstado, String descEstado, String ufEstado, List<Cidade> cidade) {
+    //construtores
+    public Estado() {
+    }
+
+    public Estado(int idEstado, String descEstado, String ufEstado) {
         this.idEstado = idEstado;
         this.descEstado = descEstado;
         this.ufEstado = ufEstado;
-        this.cidade = cidade;
     }
+
+    // lista de cidades
+
+    public ArrayList<Cidade> getCidades(ArrayList<Cidade> cidades){
+        ArrayList<Cidade> cidadesTemp = new ArrayList<>();
+
+        for (int i = 0; i< cidades.size(); i++){
+            Cidade cidade = cidades.get(i);
+            if (cidade.getEstado().equals(this)){
+                cidadesTemp.add(cidade);
+            }
+        }
+        return cidadesTemp;
+    } // fim array
+
+    //getter e setter
+
 
     public int getIdEstado() {
         return idEstado;
@@ -38,13 +59,5 @@ public class Estado {
 
     public void setUfEstado(String ufEstado) {
         this.ufEstado = ufEstado;
-    }
-
-    public List<Cidade> getCidade() {
-        return cidade;
-    }
-
-    public void setCidade(List<Cidade> cidade) {
-        this.cidade = cidade;
     }
 }

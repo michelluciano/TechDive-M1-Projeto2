@@ -1,4 +1,4 @@
-package habilitPro.validacoes;
+package habilitPro.Utils;
 
 import java.util.InputMismatchException;
 

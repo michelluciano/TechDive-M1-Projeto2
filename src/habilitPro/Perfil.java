@@ -1,16 +1,32 @@
 package habilitPro;
 
+import java.util.ArrayList;
+
 public class Perfil {
 
     private int idPerfil;
     private String nomePerfil;
     private String descricaoPerfil;
+    public static int serialPerfil =0;
+
 
     public Perfil(int idPerfil, String nomePerfil, String descricaoPerfil) {
         this.idPerfil = idPerfil;
         this.nomePerfil = nomePerfil;
         this.descricaoPerfil = descricaoPerfil;
     }
+
+    public ArrayList<Usuario> getUsuarios(ArrayList<Usuario> usuarios){
+        ArrayList<Usuario> usuariosTemp = new ArrayList<>();
+
+        for (int i = 0; i< usuarios.size(); i++){
+            Usuario usuario = usuarios.get(i);
+            if (usuario.getPerfil().equals(this)){
+                usuariosTemp.add(usuario);
+            }
+        }
+        return usuariosTemp;
+    } // fim array
 
     public int getIdPerfil() {
         return idPerfil;
@@ -36,12 +52,6 @@ public class Perfil {
         this.descricaoPerfil = descricaoPerfil;
     }
 
-    @Override
-    public String toString() {
-        return "Perfil{" +
-                "idPerfil=" + idPerfil +
-                ", nomePerfil='" + nomePerfil + '\'' +
-                ", descricaoPerfil='" + descricaoPerfil + '\'' +
-                '}';
-    }
+
+
 }
