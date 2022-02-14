@@ -7,6 +7,7 @@ public class Perfil {
     private int idPerfil;
     private String nomePerfil;
     private String descricaoPerfil;
+    private Usuario usuario;
     public static int serialPerfil =0;
 
 
@@ -27,6 +28,10 @@ public class Perfil {
         }
         return usuariosTemp;
     } // fim array
+
+    public Usuario getUsuario() { return usuario;}
+
+    public void setUsuario(Usuario usuario) {this.usuario = usuario;}
 
     public int getIdPerfil() {
         return idPerfil;
@@ -53,5 +58,13 @@ public class Perfil {
     }
 
 
-
+    @Override
+    public String toString() {
+        return "Perfil{" +
+                "idPerfil=" + idPerfil +
+                ", nomePerfil='" + nomePerfil + '\'' +
+                ", descricaoPerfil='" + descricaoPerfil + '\'' +
+                ", usuario=" + usuario +
+                '}';
+    }
 }

@@ -23,6 +23,18 @@ public class Usuario {
         this.perfil = perfil;
     }
 
+    public ArrayList<Perfil> getPerfis(ArrayList<Perfil> perfis){
+        ArrayList<Perfil> perfisTemp = new ArrayList<>();
+
+        for (int i = 0; i< perfis.size(); i++){
+            Perfil perfil = perfis.get(i);
+            if (perfil.getUsuario().equals(this)){
+                perfisTemp.add(perfil);
+            }
+        }
+        return perfisTemp;
+    } // fim array
+
     public int getIdUsuario() {
         return idUsuario;
     }

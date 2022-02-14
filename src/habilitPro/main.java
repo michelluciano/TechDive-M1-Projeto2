@@ -65,7 +65,7 @@ public class main {
 
 //                case 4:
 //                    // chama o menu de gerenciamento de usuários
-//                    menuGerenciarUsuarios();
+//                    menuGerenciarSegmento();
 //                    break;
 //
 //                case 5:
@@ -509,6 +509,172 @@ public class main {
         return reg;
     }
 
+    private int menuGerenciarUsuarios() {
+        Usuario temp;
+        String pesquisaUsuario;
+        while (true){
+            System.out.println("\n:: G E R E N C I A R   P E R F I L ::\n");
+            System.out.println("Escolha a opção desejada");
+            System.out.println("1 - Novo Usuario");
+            System.out.println("2 - Listar Perfis");
+            System.out.println("3 - Pesquisar Perfis");
+            System.out.println("4 - Excluir Usuario");
+            System.out.println("5 - Atualizar Usuario");
+            System.out.println("6 - Voltar Menu Anterior");
+            System.out.print("Sua opção: ");
+            int opcao = Integer.parseInt(entrada.nextLine());
+            limpatela.limparTela();
+
+            switch (opcao){
+                case 1: // vamos cadastrar um novo autor
+                    System.out.print("Nome: ");
+                    String nomeUsuario= entrada.nextLine();
+
+                    System.out.print("\nCPF: ");
+                    String cpfUsuario = entrada.nextLine();
+                    System.out.print("\nE-mail: ");
+                    String emailUsuario = entrada.nextLine();
+                    System.out.print("\nSenha: ");
+                    String senhaUsuario = entrada.nextLine();
+
+                    // para cadastrar uma nova cidade precisa de um ESTADO
+                    Perfil perfil = null; // ESTADO
+                    while (perfil == null) {
+                        System.out.print("Informe o id ou nome do Perfil: ");
+                        String pesquisaPerfil = entrada.nextLine();
+                        // chamamos o método que pesquisa o autor
+                        perfil = pesquisarPerfil(pesquisaPerfil);
+                        if (perfil == null) { // perfil não encotrado
+                            System.out.print("\nPerfil não encontrado.\n\nDigite 1 para pesquisar novamente ou 2 para voltar ao menu anterior: ");
+                            int opcaoTemp = Integer.parseInt(entrada.nextLine());
+                            if (opcaoTemp == 2) {
+                                return 1; // volta para o menu anterior
+                            }
+                        }
+                    }
+                    System.out.println("Perfil selecionado: " + perfil.getNomePerfil());
+                    // fim para encontrar estado
+
+                    Usuario.serialUsuario++;
+                    Usuario usu = new Usuario(Usuario.serialUsuario, nomeUsuario,cpfUsuario,emailUsuario,senhaUsuario,perfil);
+                    usuarios.add(usu);
+
+                    System.out.println("\nO Usuario foi cadastrado com sucesso");
+
+                    break;
+
+                case 2:
+                    if(usuarios.isEmpty()){
+                        System.out.println("\nNão há nenhum Usuario cadastrado.");
+                    }
+                    else{
+                        for(int i = 0; i < usuarios.size(); i++){
+                            temp = usuarios.get(i); //
+                            System.out.println("Id:           \t" + temp.getIdUsuario());
+                            System.out.println("Nome:         \t" + temp.getNome());
+                            System.out.println("CPF:          \t" + temp.getCPF());
+                            System.out.println("E-mail:       \t" + temp.getEmail());
+                            System.out.println("Descrição:    \t" + temp.getPerfil());
+                        }
+                    }
+                    break;
+
+                case 3:
+                    System.out.print("\nInforme a ID ou Nome do Usuario: ");
+                    pesquisaUsuario = entrada.nextLine();
+                    // método que pesquisa o Usuario
+                    temp = pesquisarUsuario(pesquisaUsuario);
+                    if(temp == null){
+                        System.out.println("\nO Usuario náo foi encontrado.");
+                    }
+                    else{
+                        // mostra o Usuario
+                        System.out.println("Id:           \t" + temp.getIdUsuario());
+                        System.out.println("Nome:         \t" + temp.getNome());
+                        System.out.println("CPF:          \t" + temp.getCPF());
+                        System.out.println("E-mail:       \t" + temp.getEmail());
+                    }
+
+                    break;
+                case 4:
+                    System.out.print("\nInforme a ID ou Nome do Usuario a ser excluído: ");
+                    pesquisaUsuario = entrada.nextLine();
+                    temp = pesquisarUsuario(pesquisaUsuario);
+                    if(temp == null){ // não encontrado
+                        System.out.println("\nO Usuario não foi encontrado.");
+                    }
+                    else{
+                        // vamos excluir este Usuario. Atenção: Se houver Cidades relacionadas
+                        // a este Usuario, então a exclusão destes deverá ser feita primeiro
+                        if(temp.getPerfis(perfis).size() > 0){
+                            System.out.println("\nOps! Este Usuario está relacionado a " + temp.getPerfis(perfis).size() + ". Exclua eles primeiro.");
+                        }
+                        else{
+                            usuarios.remove(temp);
+                            System.out.println("\nUsuario foi excluído com sucesso.");
+                        }
+                    }
+
+                    break;
+
+                case 5: //atualizar
+                    System.out.print("\nInforme a UF ou descricao do Usuario a ser atualizado: ");
+                    pesquisaUsuario = entrada.nextLine();
+                    // chamamos o método que pesquisa o Usuario
+                    temp = pesquisarUsuario(pesquisaUsuario);
+                    if(temp == null){ // não encotrado
+                        System.out.println("\nO Usuario "+temp.getNomeUsuario() +" não foi encontrado.");
+                    }
+                    else{
+                        // mostra o Usuario encontrado
+                        System.out.println("\nDados atuais deste Usuário:");
+                        System.out.println("\nId:           \t" + temp.getIdUsuario());
+                        System.out.println("Nome:           \t" + temp.getNomeUsuario());
+                        System.out.println("Descrição:      \t" + temp.getDescricaoUsuario());
+                        System.out.println("Qt Usuários:    \t" + temp.getUsuarios(usuarios).size());
+                        System.out.println("==========================================================");
+                        System.out.println("\nInforme os novos dados:");
+                        System.out.print("\nNovo Nome do Usuario: ");
+                        String novaNomeUsuario = entrada.nextLine();
+                        System.out.print("Nova UF do Usuario: ");
+                        String novoDescUsuario = entrada.nextLine();
+
+                        // atualizar os dados no ArrayList
+                        temp.setNomeUsuario(novaNomeUsuario);
+                        temp.setDescricaoUsuario(novoDescUsuario);
+                        System.out.println("\nUsuario atualizado com sucesso!");
+                    }
+
+                    break;
+
+                case 6:
+                    return 0; // volta para o menu principal
+            }
+        }
+
+    }
+    private Usuario pesquisarUsuario(String pesquisaUsuario) {
+        Usuario usu = null;
+
+        // verifica
+        for(int i = 0; i < usuarios.size(); i++){
+            // pesquisa por ID
+            if(Integer.toString(usuarios.get(i).getIdUsuario()).equals(pesquisaUsuario)){
+                return usuarios.get(i);
+            }
+            // pesquisar por nome
+            else if(usuarios.get(i).getNome().contains(pesquisaUsuario)){
+                return usuarios.get(i);
+            }
+            // pesquisar por nome
+            else if(usuarios.get(i).getCPF().contains(pesquisaUsuario)){
+                return usuarios.get(i);
+            }
+        }
+
+        return usu;
+    }
+
     private int menuGerenciarPerfil() {
         Perfil temp;
         String pesquisaPerfil;
@@ -575,17 +741,17 @@ public class main {
                     System.out.print("\nInforme a UF ou descricao do Perfil a ser excluído: ");
                     pesquisaPerfil = entrada.nextLine();
                     temp = pesquisarPerfil(pesquisaPerfil);
-                    if(temp == null){ // autor não encontrado
+                    if(temp == null){ // não encontrado
                         System.out.println("\nO Perfil não foi encontrado.");
                     }
                     else{
                         // vamos excluir este Perfil. Atenção: Se houver Cidades relacionadas
                         // a este Perfil, então a exclusão destes deverá ser feita primeiro
-                        if(temp.getCidades(cidades).size() > 0){
-                            System.out.println("\nOps! Este Perfil está relacionado a " + temp.getCidades(cidades).size() + ". Exclua eles primeiro.");
+                        if(temp.getUsuarios(usuarios).size() > 0){
+                            System.out.println("\nOps! Este Perfil está relacionado a " + temp.getUsuarios(usuarios).size() + ". Exclua eles primeiro.");
                         }
                         else{
-                            Perfils.remove(temp);
+                            perfis.remove(temp);
                             System.out.println("\nPerfil foi excluído com sucesso.");
                         }
                     }
@@ -598,25 +764,25 @@ public class main {
                     // chamamos o método que pesquisa o Perfil
                     temp = pesquisarPerfil(pesquisaPerfil);
                     if(temp == null){ // não encotrado
-                        System.out.println("\nO Perfil "+temp.getDescPerfil() +" não foi encontrado.");
+                        System.out.println("\nO Perfil "+temp.getNomePerfil() +" não foi encontrado.");
                     }
                     else{
                         // mostra o Perfil encontrado
                         System.out.println("\nDados atuais deste autor:");
-                        System.out.println("\nId:         \t" + temp.getIdPerfil());
-                        System.out.println("Descrição:    \t" + temp.getDescPerfil());
-                        System.out.println("UF:           \t" + temp.getUfPerfil());
-                        System.out.println("Quant Cidades:\t" + temp.getCidades(cidades).size());
-
+                        System.out.println("\nId:           \t" + temp.getIdPerfil());
+                        System.out.println("Nome:           \t" + temp.getNomePerfil());
+                        System.out.println("Descrição:      \t" + temp.getDescricaoPerfil());
+                        System.out.println("Qt Usuários:    \t" + temp.getUsuarios(usuarios).size());
+                        System.out.println("==========================================================");
                         System.out.println("\nInforme os novos dados:");
-                        System.out.print("\nNova Descrição do Perfil: ");
-                        String novaDescPerfil = entrada.nextLine();
+                        System.out.print("\nNovo Nome do Perfil: ");
+                        String novaNomePerfil = entrada.nextLine();
                         System.out.print("Nova UF do Perfil: ");
-                        String novoUF = entrada.nextLine();
+                        String novoDescPerfil = entrada.nextLine();
 
                         // atualizar os dados no ArrayList
-                        temp.setDescPerfil(novaDescPerfil);
-                        temp.setUfPerfil(novoUF);
+                        temp.setNomePerfil(novaNomePerfil);
+                        temp.setDescricaoPerfil(novoDescPerfil);
                         System.out.println("\nPerfil atualizado com sucesso!");
                     }
 
@@ -628,6 +794,23 @@ public class main {
         }
 
 
+    }
+    private Perfil pesquisarPerfil(String pesquisaPerfil) {
+        Perfil perf = null;
+
+        // verifica
+        for(int i = 0; i < perfis.size(); i++){
+            // pesquisa
+            if(Integer.toString(perfis.get(i).getIdPerfil()).equals(pesquisaPerfil)){
+                return perfis.get(i);
+            }
+            // pesquisar por desc
+            else if(perfis.get(i).getDescricaoPerfil().contains(pesquisaPerfil)){
+                return perfis.get(i);
+            }
+        }
+
+        return perf;
     }
 
 //    public static void main(String[] args) {
