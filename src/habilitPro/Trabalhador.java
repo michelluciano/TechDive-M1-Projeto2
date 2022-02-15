@@ -14,8 +14,17 @@ public class Trabalhador {
     private Date dataFuncao;
     private List<Trilha> trilhas = new ArrayList<>();
     private List<Modulo> modulos = new ArrayList<>();
+    public static int serialTrabalhador = 0;
 
     public Trabalhador() {
+    }
+
+    public Trabalhador(int idTrabalhador, String nome, String CPF, String funcao) {
+        this.idTrabalhador = idTrabalhador;
+        this.nome = nome;
+        this.CPF = CPF;
+        this.funcao = funcao;
+
     }
 
     public int getIdTrabalhador() {

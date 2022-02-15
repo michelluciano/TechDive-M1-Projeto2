@@ -88,10 +88,10 @@ public class HabilitPro {
 //                    // chama o menu de gerenciamento de multas
 //                    menuGerenciarMultas();
 //                    break;
-//                case 8:
-//                    // chama o menu de gerenciamento de multas
-//                    menuGerenciarMultas();
-//                    break;
+                case 8:
+                    // chama o menu de gerenciamento de modulos
+                    menuGerenciarModulo();
+                    break;
                   case 9:
                     // chama o menu de gerenciamento de usuários
                     menuGerenciarUsuarios();
@@ -882,72 +882,88 @@ public class HabilitPro {
 
             switch (opcao) {
                 case 1:
-                    System.out.print("\nDescrição: ");
-                    String descRegional = entrada.nextLine();
-                    RegionalSenai.serialRegional++;
-                    RegionalSenai reg = new RegionalSenai(RegionalSenai.serialRegional, descRegional);
-                    regionais.add(reg);
-                    System.out.println("\nO Regional foi cadastrado com sucesso");
+                    System.out.print("\nNome: ");
+                    String nomeTrabalhador = entrada.nextLine();
+                    System.out.print("\nCPF: ");
+                    String CPFTrabalhador = entrada.nextLine();
+                    System.out.print("\nFunção: ");
+                    String funcaoTrabalhador = entrada.nextLine();
+
+                    Trabalhador.serialTrabalhador++;
+                    Trabalhador trab = new Trabalhador(Trabalhador.serialTrabalhador, nomeTrabalhador,CPFTrabalhador,funcaoTrabalhador);
+                    trabalhadores.add(trab);
+                    System.out.println("\nO Trabalhador foi cadastrado com sucesso");
                     break;
 
-                case 2:
-                    if (regionais.isEmpty()) {
-                        System.out.println("\nNão há nenhuma Regional cadastrado.");
+                case 2:// listar
+                    if (trabalhadores.isEmpty()) {
+                        System.out.println("\nNão há nenhuma trabalhador cadastrado.");
                     } else {
-                        for (int i = 0; i < regionais.size(); i++) {
-                            temp = regionais.get(i); // obtém o autor da iteração atual
-                            System.out.println("\nId:         \t" + temp.getIdRegionalSenai());
-                            System.out.println("Descrição:    \t" + temp.getDescRegionalSenai());
+                        for (int i = 0; i < trabalhadores.size(); i++) {
+                            temp = trabalhadores.get(i); // obtém o autor da iteração atual
+                            System.out.println("\nId:   \t" + temp.getIdTrabalhador());
+                            System.out.println("Nome:   \t" + temp.getNome());
+                            System.out.println("CPF:    \t" + temp.getCPF());
+                            System.out.println("Função: \t" + temp.getFuncao());
                         }
                     }
                     break;
 
-                case 3:
+                case 3: //pesquisar
                     System.out.print("\nInforme O ID ou descrição da Regional: ");
-                    pesquisaRegional = entrada.nextLine();
+                    pesquisaTrabalhador = entrada.nextLine();
                     // método que pesquisa o Estado
-                    temp = pesquisarRegionais(pesquisaRegional);
+                    temp = pesquisarTrabalhador(pesquisaTrabalhador);
                     if (temp == null) {
-                        System.out.println("\nA Regional náo foi encontrada.");
+                        System.out.println("\nA trabalhador náo foi encontrada.");
                     } else {
-                        // mostra o Regional
-                        System.out.println("\nId:         \t" + temp.getIdRegionalSenai());
-                        System.out.println("Descrição:    \t" + temp.getDescRegionalSenai());
+                        // mostra o trabalhador
+                        System.out.println("\nId:   \t" + temp.getIdTrabalhador());
+                        System.out.println("Nome:   \t" + temp.getNome());
+                        System.out.println("CPF:    \t" + temp.getCPF());
+                        System.out.println("Função: \t" + temp.getFuncao());
                     }
 
                     break;
-                case 4:
-                    System.out.print("\nInforme o ID ou descricao da Regional a ser excluído: ");
-                    pesquisaRegional = entrada.nextLine();
-                    temp = pesquisarRegionais(pesquisaRegional);
-                    if (temp == null) { // autor não encontrado
-                        System.out.println("\nA Regional não foi encontrado.");
+                case 4:// excluir
+                    System.out.print("\nInforme o ID , nome ou CPF do trabalhador a ser excluído: ");
+                    pesquisaTrabalhador = entrada.nextLine();
+                    temp = pesquisarTrabalhador(pesquisaTrabalhador);
+                    if (temp == null) { // não encontrado
+                        System.out.println("\nTrabalhador não encontrado.");
                     } else {
                         estados.remove(temp);
-                        System.out.println("\nA Regional foi excluída com sucesso.");
+                        System.out.println("\nTrabalhador foi excluída com sucesso.");
                     }
 
                     break;
 
                 case 5: // Atualizar
-                    System.out.print("\nInforme O ID ou descricao da Regional a ser atualizado: ");
-                    pesquisaRegional = entrada.nextLine();
-                    // chamamos o método que pesquisa o estaDO
-                    temp = pesquisarRegionais(pesquisaRegional);
-                    if (temp == null) { // não encotrado
-                        System.out.println("\nA Regional " + temp.getDescRegionalSenai() + " não foi encontrado.");
+                    System.out.print("\nInforme o ID , nome ou CPF do trabalhador a ser excluído: ");
+                    pesquisaTrabalhador = entrada.nextLine();
+                    temp = pesquisarTrabalhador(pesquisaTrabalhador);
+                    if (temp == null) { // não encontrado
+                        System.out.println("\nTrabalhador não encontrado.");
                     } else {
                         // mostra o estado encontrado
                         System.out.println("\nDados atuais desta Regional:");
-                        System.out.println("Id:          \t" + temp.getIdRegionalSenai());
-                        System.out.println("Descrição:   \t" + temp.getDescRegionalSenai());
+                        System.out.println("\nId:   \t" + temp.getIdTrabalhador());
+                        System.out.println("Nome:   \t" + temp.getNome());
+                        System.out.println("CPF:    \t" + temp.getCPF());
+                        System.out.println("Função: \t" + temp.getFuncao());
 
                         System.out.println("\nInforme os novos dados:");
-                        System.out.print("\nNova Descrição dA Regional SENAI: ");
-                        String novaDescRegional = entrada.nextLine();
+                        System.out.print("\nNome: ");
+                        String novonomeTrabalhador = entrada.nextLine();
+                        System.out.print("\nCPF: ");
+                        String novoCPFTrabalhador = entrada.nextLine();
+                        System.out.print("\nFunção: ");
+                        String novofuncaoTrabalhador = entrada.nextLine();
                         // atualizar os dados no ArrayList
-                        temp.setDescRegionalSenai(novaDescRegional);
-                        System.out.println("\nA Regional foi atualizada com sucesso!");
+                        temp.setNome(novonomeTrabalhador);
+                        temp.setCPF(novoCPFTrabalhador);
+                        temp.setFuncao(novofuncaoTrabalhador);
+                        System.out.println("\nTrabalhador foi atualizada com sucesso!");
                     }
 
                     break;
@@ -976,6 +992,26 @@ public class HabilitPro {
         }
 
         return tra;
+    }
+
+    private void menuGerenciarModulo() {
+    }
+    private Modulo pesquisarModulo(String pesquisaModulo) {
+        Modulo mod = null;
+
+        // verifica
+        for(int i = 0; i < modulos.size(); i++){
+            // pesquisa
+            if(Integer.toString(modulos.get(i).getIdPerfil()).equals(pesquisaPerfil)){
+                return modulos.get(i);
+            }
+            // pesquisar por desc
+            else if(modulos.get(i).getDescricaoPerfil().contains(pesquisaPerfil)){
+                return modulos.get(i);
+            }
+        }
+
+        return mod;
     }
 
     private int menuGerenciarUsuarios() {
