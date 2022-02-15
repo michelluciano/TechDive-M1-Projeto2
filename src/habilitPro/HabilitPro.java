@@ -1,7 +1,11 @@
 package habilitPro;
 
+import habilitPro.Utils.AnoCorrente;
 import habilitPro.Utils.LimparTela;
+import habilitPro.enums.EnumTotal;
 
+import javax.swing.plaf.synth.Region;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -12,6 +16,10 @@ public class HabilitPro {
     private static ArrayList<Estado> estados = new ArrayList<>();// BANCO DE DADOS
     private static ArrayList<RegionalSenai> regionais = new ArrayList<>();// BANCO DE DADOS
     private static ArrayList<SegmentoEmpresa> segmentos = new ArrayList<>();// BANCO DE DADOS
+    private static ArrayList<Empresa> empresas = new ArrayList<>();// BANCO DE DADOS
+    private static ArrayList<Trabalhador> trabalhadores = new ArrayList<>();// BANCO DE DADOS
+    private static ArrayList<Trilha> trilhas = new ArrayList<>();// BANCO DE DADOS
+    private static ArrayList<Modulo> modulos = new ArrayList<>();// BANCO DE DADOS
     private static ArrayList<Perfil> perfis = new ArrayList<>();// BANCO DE DADOS
     private static ArrayList<Usuario> usuarios = new ArrayList<>();// BANCO DE DADOS
     // FIM ARRAYS TESTE+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -23,6 +31,9 @@ public class HabilitPro {
     public static void main(String[] args) {
         HabilitPro mainTestes = new HabilitPro();
         mainTestes.menuPrincipal();
+        //POPULAR ARRAY EMPRESA
+//        Empresa emp = new Empresa(1,"teste Empres","12346578912",EnumTotal.MATRIZ.getValue(),null,null,null,null,null);
+//        empresas.add(emp);
     }
 
     // método que exibe o menu principal do sistema
@@ -66,14 +77,13 @@ public class HabilitPro {
                     break;
 
                 case 5:
-                    // chama o menu de gerenciamento de empresa
                     menuGerenciarEmpresa();
                     break;
 
-//                case 6:
-//                    // chama o menu de gerenciamento de multas
-//                    menuGerenciarMultas();
-//                    break;
+                case 6:
+                    // chama o menu de gerenciamento de multas
+                    menuGerenciarTrabalhador();
+                    break;
 //                case 7:
 //                    // chama o menu de gerenciamento de multas
 //                    menuGerenciarMultas();
@@ -98,7 +108,7 @@ public class HabilitPro {
         }
     }
 
-   // METODOS DO MENU
+    // METODOS DO MENU
 
     private int menuGerenciarEstados() {
         Estado temp;
@@ -615,7 +625,357 @@ public class HabilitPro {
         return seg;
     }
 
-    private void menuGerenciarEmpresa() {
+    private int menuGerenciarEmpresa() {
+        Empresa temp; // serve para várias operações neste menu
+        String pesquisaEmpresa;
+        String tipoEMpresa= "";
+        String nomeFilial="";
+        while (true) { // mostra o menu de forma repetitiva até o usuário usar a opção de sair
+            System.out.println("\n:: G E R E N C I A R   E M P R E S A ::\n");
+            System.out.println("Escolha a opção desejada");
+            System.out.println("1 - Nova Empresa");
+            System.out.println("2 - Listar Empresas");
+            System.out.println("3 - Pesquisar Empresa");
+            System.out.println("4 - Excluir Empresa");
+            System.out.println("6 - Voltar Menu Anterior");
+            System.out.print("Sua opção: ");
+            int opcao = Integer.parseInt(entrada.nextLine()); // lê a opção do usuário
+            limpatela.limparTela();
+            switch (opcao) {
+                case 1:
+                    System.out.print("\nNome da Empresa: ");
+                    String nomeEmpresa = entrada.nextLine();
+                    System.out.print("\nCNPJ da Empresa: ");
+                    String CNPJEmpresa = entrada.nextLine();
+                    System.out.print("\nTipo da Empresa:\n 1 - Matriz \n 2 - Filial ");
+                    int optipoEmpresa = entrada.nextInt();
+                    if (optipoEmpresa == 1){
+                        tipoEMpresa = EnumTotal.MATRIZ.getDisplayName();
+                    }else{
+                        tipoEMpresa = EnumTotal.FILIAL.getDisplayName();
+                        System.out.print("\nNome da Filial da Empresa: ");
+                        nomeFilial = entrada.nextLine();
+                    }
+
+                    // para cadastrar uma nova EMPRESA precisa de uma cidade
+                    Cidade cidade = null; // CIDADE
+                    while (cidade == null) {
+                        System.out.print("Informe o id ou nome da Cidade: ");
+                        String pesquisaCidade = entrada.nextLine();
+                        // chamamos o método que pesquisa o autor
+                        cidade = pesquisarCidade(pesquisaCidade);
+                        if (cidade == null) { // Estado não encotrado
+                            System.out.print("\nEstado não encontrado.\n\nDigite 1 para pesquisar novamente ou 2 para voltar ao menu anterior: ");
+                            int opcaoTemp = Integer.parseInt(entrada.nextLine());
+                            if (opcaoTemp == 2) {
+                                return 1; // volta para o menu anterior
+                            }
+                        }
+                    }
+                    System.out.println("Cidade selecionada: " + cidade.getDescCidade() + " - " + cidade.getEstado().getUfEstado());
+
+                    // fim para encontrar SEGMENTO
+                    SegmentoEmpresa segmento = null; // SEGmento
+                    while (segmento == null) {
+                        System.out.print("Informe o id ou nome o Segmento: ");
+                        String pesquisaSegmento = entrada.nextLine();
+                        // chamamos o método que pesquisa o autor
+                        segmento = pesquisarSegmento(pesquisaSegmento);
+                        if (segmento == null) { // Estado não encotrado
+                            System.out.print("\nSegmmento não encontrado.\n\nDigite 1 para pesquisar novamente ou 2 para voltar ao menu anterior: ");
+                            int opcaoTemp = Integer.parseInt(entrada.nextLine());
+                            if (opcaoTemp == 2) {
+                                return 1; // volta para o menu anterior
+                            }
+                        }
+                    }
+                    System.out.println("Cidade selecionada: " + cidade.getDescCidade() + " - " + cidade.getEstado().getUfEstado());
+                    System.out.println("Segmento selecionada: " + segmento.getDescricaoSegmento());
+                    // fim para encontrar estado
+                    // contador de cidade
+
+                    RegionalSenai regional = null; // REGIONAL
+                    while (regional == null) {
+                        System.out.print("Informe o id ou nome da Regional: ");
+                        String pesquisaRegional = entrada.nextLine();
+                        // chamamos o método que pesquisa o autor
+                        regional = pesquisarRegionais(pesquisaRegional);
+                        if (regional == null) { // Estado não encotrado
+                            System.out.print("\nRegional não encontrado.\n\nDigite 1 para pesquisar novamente ou 2 para voltar ao menu anterior: ");
+                            int opcaoTemp = Integer.parseInt(entrada.nextLine());
+                            if (opcaoTemp == 2) {
+                                return 1; // volta para o menu anterior
+                            }
+                        }
+                    }
+                    System.out.println("Cidade selecionada: " + cidade.getDescCidade() + " - " + cidade.getEstado().getUfEstado());
+                    System.out.println("Segmento selecionada: " + segmento.getDescricaoSegmento());
+                    System.out.println("Regional selecionada: " + regional.getDescRegionalSenai());
+                    // fim para encontrar estado
+
+
+                    Trilha trilha = null; // REGIONAL
+                    while (trilha == null) {
+                        System.out.print("Informe o id ou nome da Trilha: ");
+                        String pesquisaTrilha = entrada.nextLine();
+                        // chamamos o método que pesquisa o autor
+                        trilha = pesquisarTrilha(pesquisaTrilha);
+                        if (trilha == null) { // Estado não encotrado
+                            System.out.print("\nRegional não encontrado.\n\nDigite 1 para pesquisar novamente \n2 para voltar ao menu anterior\n 3 Cadastrar trilha: ");
+                            int opcaoTemp = Integer.parseInt(entrada.nextLine());
+                            if (opcaoTemp == 2) {
+                                return 1; // volta para o menu anterior
+                            }
+                        }
+                    }
+                    System.out.println("Cidade selecionada: " + cidade.getDescCidade() + " - " + cidade.getEstado().getUfEstado());
+                    System.out.println("Segmento selecionada: " + segmento.getDescricaoSegmento());
+                    System.out.println("Regional selecionada: " + regional.getDescRegionalSenai());
+                    Empresa.serialEmpresa++;
+                    Empresa emp;
+                    if(tipoEMpresa.equals(EnumTotal.MATRIZ.getDisplayName())){
+                        emp = new Empresa(Empresa.serialEmpresa, nomeEmpresa,CNPJEmpresa,nomeEmpresa,segmento,cidade,regional);
+                    }else {
+                        emp = new Empresa(Empresa.serialEmpresa,nomeEmpresa,CNPJEmpresa,tipoEMpresa,nomeFilial,segmento,cidade,regional);
+                    }
+
+                    // e o adiciona no ArrayList de cidades
+                    empresas.add(emp);
+
+                    System.out.println("\nA Cidade cadastrada com sucesso");
+
+                    break;
+                case 2:// lista
+                    if (empresas.isEmpty()) {
+                        System.out.println("\nNão há nenhum empresa registrado.");
+                    } else {
+                        for (int i = 0; i < empresas.size(); i++) {
+                            temp = empresas.get(i); // obtém o empréstimo da iteração atual
+                            System.out.println("\nId:             \t" + temp.getIdEmpresa());
+                            System.out.println("Nome da Empresa:  \t" + temp.getNomeEmpresa());
+                            System.out.println("CNPJ:             \t" + temp.getCNPJEmpresa());
+                            if (temp.getTipoEmpresa().equals(EnumTotal.MATRIZ)) {
+                                System.out.println("Tipo :            \t" + temp.getTipoEmpresa());
+                            } else {
+                                System.out.println("Tipo :            \t" + temp.getTipoEmpresa());
+                                System.out.println("Nome Filial       \t" + temp.getNomeFilial());
+                            }
+                            System.out.println("Segmento Empresa: \t" + (temp.getSegmentoEmpresa().getDescricaoSegmento()));
+                            System.out.println("Cidade:           \t" + (temp.getCidadeEmpresa().getDescCidade()));
+                            System.out.println("Estado:           \t" + (temp.getCidadeEmpresa().getEstado().getUfEstado()));
+                            System.out.println("Regional SENAI:   \t" + (temp.getRegionalSenai().getDescRegionalSenai()));
+                            System.out.println("Trilha            \t" + temp.getTrilha());
+                        }
+                    }
+                    break;
+                case 3:// pesquisa
+                    System.out.print("\nInforme o ID, CNPJ ou Nome da Empresa: ");
+                    pesquisaEmpresa = entrada.nextLine();
+                    // chamamos o método que pesquisa
+                    temp = pesquisarEmpresa(pesquisaEmpresa);
+                    if(temp == null){ // empréstimo não encontrado
+                        System.out.println("\nO empréstimo náo foi encontrado.");
+                    }else {
+                        System.out.println("\nId:             \t" + temp.getIdEmpresa());
+                        System.out.println("Nome da Empresa:  \t" + temp.getNomeEmpresa());
+                        System.out.println("CNPJ:             \t" + temp.getCNPJEmpresa());
+                        if (temp.getTipoEmpresa().equals(EnumTotal.MATRIZ)) {
+                            System.out.println("Tipo :            \t" + temp.getTipoEmpresa());
+                        } else {
+                            System.out.println("Tipo :            \t" + temp.getTipoEmpresa());
+                            System.out.println("Nome Filial       \t" + temp.getNomeFilial());
+                        }
+                        System.out.println("Segmento Empresa: \t" + (temp.getSegmentoEmpresa().getDescricaoSegmento()));
+                        System.out.println("Cidade:           \t" + (temp.getCidadeEmpresa().getDescCidade()));
+                        System.out.println("Estado:           \t" + (temp.getCidadeEmpresa().getEstado().getUfEstado()));
+                        System.out.println("Regional SENAI:   \t" + (temp.getRegionalSenai().getDescRegionalSenai()));
+                        System.out.println("Trilha            \t" + temp.getTrilha());
+                    }
+
+                    break;
+                case 4:// excluir
+                    System.out.println("Informa o ID da Empresa a ser excluido:");
+                    pesquisaEmpresa = entrada.nextLine();
+                    System.out.print("\nInforme o ID, CNPJ ou Nome da Empresa: ");
+                    pesquisaEmpresa = entrada.nextLine();
+                    // chamamos o método que pesquisa
+                    temp = pesquisarEmpresa(pesquisaEmpresa);
+                    if(temp == null){ // empréstimo não encontrado
+                        System.out.println("\nO empréstimo náo foi encontrado.");
+                    }else {
+                        // vamos excluir este Estado. Atenção: Se houver Cidades relacionadas
+                        // a este Estado, então a exclusão destes deverá ser feita primeiro
+                        if(temp.getTrilha() != null){
+                            System.out.println("\nOps! Esta empresa está relacionado a uumma ou mais trilhas. Exclua eles primeiro.");
+                        }
+                        else{
+                            estados.remove(temp);
+                            System.out.println("\nEstado foi excluído com sucesso.");
+                        }
+                    }
+                    break;
+                case 6:
+                    return 0;
+
+            }
+        }
+
+    }
+
+    private Trilha pesquisarTrilha(String pesquisaTrilha) {
+        Trilha tri = null;
+        // verifica
+        for(int i = 0; i < trilhas.size(); i++){
+            // pesquisa por ID
+            if(Integer.toString(trilhas.get(i).getIdTrilha()).equals(pesquisaTrilha)){
+                return trilhas.get(i);
+            }
+            // pesquisar por nome
+            else if(trilhas.get(i).getNome().contains(pesquisaTrilha)){
+                return trilhas.get(i);
+            }
+            // pesquisar por nome
+            else if(trilhas.get(i).getApelido().contains(pesquisaTrilha)){
+                return trilhas.get(i);
+            }
+        }
+
+        return tri;
+    }
+
+    private Empresa pesquisarEmpresa(String pesquisaEmpresa) {
+        Empresa emp = null;
+        // verifica
+        for(int i = 0; i < empresas.size(); i++){
+            // pesquisa por ID
+            if(Integer.toString(empresas.get(i).getIdEmpresa()).equals(pesquisaEmpresa)){
+                return empresas.get(i);
+            }
+            // pesquisar por nome
+            else if(empresas.get(i).getNomeEmpresa().contains(pesquisaEmpresa)){
+                return empresas.get(i);
+            }
+            // pesquisar por nome
+            else if(empresas.get(i).getCNPJEmpresa().contains(pesquisaEmpresa)){
+                return empresas.get(i);
+            }
+        }
+
+        return emp;
+    }
+
+    private int menuGerenciarTrabalhador() {
+        Trabalhador temp;
+        String pesquisaTrabalhador;
+        while (true) {
+            System.out.println("\n:: G E R E N C I A R   R E G I O N A I S ::\n");
+            System.out.println("Escolha a opção desejada");
+            System.out.println("1 - Novo Trabalhador");
+            System.out.println("2 - Listar Trabalhadores");
+            System.out.println("3 - Pesquisar Trabalhador");
+            System.out.println("4 - Excluir Trabalhador");
+            System.out.println("5 - Atualizar Trabalhador");
+            System.out.println("6 - Voltar Menu Anterior");
+            System.out.print("Sua opção: ");
+            int opcao = Integer.parseInt(entrada.nextLine());
+            limpatela.limparTela();
+
+            switch (opcao) {
+                case 1:
+                    System.out.print("\nDescrição: ");
+                    String descRegional = entrada.nextLine();
+                    RegionalSenai.serialRegional++;
+                    RegionalSenai reg = new RegionalSenai(RegionalSenai.serialRegional, descRegional);
+                    regionais.add(reg);
+                    System.out.println("\nO Regional foi cadastrado com sucesso");
+                    break;
+
+                case 2:
+                    if (regionais.isEmpty()) {
+                        System.out.println("\nNão há nenhuma Regional cadastrado.");
+                    } else {
+                        for (int i = 0; i < regionais.size(); i++) {
+                            temp = regionais.get(i); // obtém o autor da iteração atual
+                            System.out.println("\nId:         \t" + temp.getIdRegionalSenai());
+                            System.out.println("Descrição:    \t" + temp.getDescRegionalSenai());
+                        }
+                    }
+                    break;
+
+                case 3:
+                    System.out.print("\nInforme O ID ou descrição da Regional: ");
+                    pesquisaRegional = entrada.nextLine();
+                    // método que pesquisa o Estado
+                    temp = pesquisarRegionais(pesquisaRegional);
+                    if (temp == null) {
+                        System.out.println("\nA Regional náo foi encontrada.");
+                    } else {
+                        // mostra o Regional
+                        System.out.println("\nId:         \t" + temp.getIdRegionalSenai());
+                        System.out.println("Descrição:    \t" + temp.getDescRegionalSenai());
+                    }
+
+                    break;
+                case 4:
+                    System.out.print("\nInforme o ID ou descricao da Regional a ser excluído: ");
+                    pesquisaRegional = entrada.nextLine();
+                    temp = pesquisarRegionais(pesquisaRegional);
+                    if (temp == null) { // autor não encontrado
+                        System.out.println("\nA Regional não foi encontrado.");
+                    } else {
+                        estados.remove(temp);
+                        System.out.println("\nA Regional foi excluída com sucesso.");
+                    }
+
+                    break;
+
+                case 5: // Atualizar
+                    System.out.print("\nInforme O ID ou descricao da Regional a ser atualizado: ");
+                    pesquisaRegional = entrada.nextLine();
+                    // chamamos o método que pesquisa o estaDO
+                    temp = pesquisarRegionais(pesquisaRegional);
+                    if (temp == null) { // não encotrado
+                        System.out.println("\nA Regional " + temp.getDescRegionalSenai() + " não foi encontrado.");
+                    } else {
+                        // mostra o estado encontrado
+                        System.out.println("\nDados atuais desta Regional:");
+                        System.out.println("Id:          \t" + temp.getIdRegionalSenai());
+                        System.out.println("Descrição:   \t" + temp.getDescRegionalSenai());
+
+                        System.out.println("\nInforme os novos dados:");
+                        System.out.print("\nNova Descrição dA Regional SENAI: ");
+                        String novaDescRegional = entrada.nextLine();
+                        // atualizar os dados no ArrayList
+                        temp.setDescRegionalSenai(novaDescRegional);
+                        System.out.println("\nA Regional foi atualizada com sucesso!");
+                    }
+
+                    break;
+
+                case 6:
+                    return 0; // volta para o menu principal
+            }
+        }
+    }
+    private Trabalhador pesquisarTrabalhador(String pesquisatrabalhador) {
+        Trabalhador tra = null;
+        // verifica
+        for(int i = 0; i < trabalhadores.size(); i++){
+            // pesquisa por ID
+            if(Integer.toString(trabalhadores.get(i).getIdTrabalhador()).equals(pesquisatrabalhador)){
+                return trabalhadores.get(i);
+            }
+            // pesquisar por nome
+            else if(trabalhadores.get(i).getNome().contains(pesquisatrabalhador)){
+                return trabalhadores.get(i);
+            }
+            // pesquisar por nome
+            else if(trabalhadores.get(i).getCPF().contains(pesquisatrabalhador)){
+                return trabalhadores.get(i);
+            }
+        }
+
+        return tra;
     }
 
     private int menuGerenciarUsuarios() {
