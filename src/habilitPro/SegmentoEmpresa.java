@@ -4,6 +4,7 @@ public class SegmentoEmpresa {
 
     private int idSegmentoEmpresa;
     private String descricaoSegmento;
+    public static int serialSegmento =0;
 
     public SegmentoEmpresa(int idSegmentoEmpresa, String descricaoSegmento) {
         this.idSegmentoEmpresa = idSegmentoEmpresa;

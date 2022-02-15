@@ -1,13 +1,11 @@
 package habilitPro;
 
-import com.sun.tools.javac.Main;
 import habilitPro.Utils.LimparTela;
 
-import javax.swing.plaf.basic.BasicGraphicsUtils;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class main {
+public class HabilitPro {
 
     // ARRAYS PARA TESTE
     private static ArrayList<Cidade> cidades = new ArrayList<>();// BANCO DE DADOS
@@ -23,7 +21,7 @@ public class main {
     LimparTela limpatela = new LimparTela();
 
     public static void main(String[] args) {
-        main mainTestes = new main();
+        HabilitPro mainTestes = new HabilitPro();
         mainTestes.menuPrincipal();
     }
 
@@ -63,16 +61,15 @@ public class main {
                     menuGerenciarRegional();
                     break;
 
-//                case 4:
-//                    // chama o menu de gerenciamento de usuários
-//                    menuGerenciarSegmento();
-//                    break;
-//
-//                case 5:
-//                    // chama o menu de gerenciamento de emprestimos
-//                    menuGerenciarEmprestimos();
-//                    break;
-//
+                case 4:
+                    menuGerenciarSegmento();
+                    break;
+
+                case 5:
+                    // chama o menu de gerenciamento de empresa
+                    menuGerenciarEmpresa();
+                    break;
+
 //                case 6:
 //                    // chama o menu de gerenciamento de multas
 //                    menuGerenciarMultas();
@@ -101,9 +98,7 @@ public class main {
         }
     }
 
-
-
-    // METODOS DO MENU
+   // METODOS DO MENU
 
     private int menuGerenciarEstados() {
         Estado temp;
@@ -509,6 +504,120 @@ public class main {
         return reg;
     }
 
+    private int menuGerenciarSegmento() {
+        SegmentoEmpresa temp;
+        String pesquisaSegmento;
+        while (true) {
+            System.out.println("\n:: G E R E N C I A R   S E G M E N T O ::\n");
+            System.out.println("Escolha a opção desejada");
+            System.out.println("1 - Nova Segmento");
+            System.out.println("2 - Listar Segmentos");
+            System.out.println("3 - Pesquisar Segmento");
+            System.out.println("4 - Excluir Segmentos");
+            System.out.println("5 - Atualizar Segmento");
+            System.out.println("6 - Voltar Menu Anterior");
+            System.out.print("Sua opção: ");
+            int opcao = Integer.parseInt(entrada.nextLine());
+            limpatela.limparTela();
+
+            switch (opcao) {
+                case 1:
+                    System.out.print("\nDescrição: ");
+                    String descSegmento = entrada.nextLine();
+                    SegmentoEmpresa.serialSegmento++;
+                    SegmentoEmpresa seg = new SegmentoEmpresa(SegmentoEmpresa.serialSegmento, descSegmento);
+                    segmentos.add(seg);
+                    System.out.println("\nO Segmento foi cadastrado com sucesso");
+                    break;
+
+                case 2:
+                    if (segmentos.isEmpty()) {
+                        System.out.println("\nNão há nenhuma Segmento cadastrado.");
+                    } else {
+                        for (int i = 0; i < segmentos.size(); i++) {
+                            temp = segmentos.get(i); // obtém o autor da iteração atual
+                            System.out.println("\nId:         \t" + temp.getIdSegmentoEmpresa());
+                            System.out.println("Descrição:    \t" + temp.getDescricaoSegmento());
+                        }
+                    }
+                    break;
+
+                case 3:
+                    System.out.print("\nInforme O ID ou descrição da Segmento: ");
+                    pesquisaSegmento = entrada.nextLine();
+                    // método que pesquisa
+                    temp = pesquisarSegmento(pesquisaSegmento);
+                    if (temp == null) {
+                        System.out.println("\nA Segmento não foi encontrada.");
+                    } else {
+                        // mostra o Segmento
+                        System.out.println("\nId:         \t" + temp.getIdSegmentoEmpresa());
+                        System.out.println("Descrição:    \t" + temp.getDescricaoSegmento());
+                    }
+
+                    break;
+                case 4:
+                    System.out.print("\nInforme o ID ou descricao da Segmento a ser excluído: ");
+                    pesquisaSegmento = entrada.nextLine();
+                    temp = pesquisarSegmento(pesquisaSegmento);
+                    if (temp == null) { // autor não encontrado
+                        System.out.println("\nA Segmento não foi encontrado.");
+                    } else {
+                        estados.remove(temp);
+                        System.out.println("\nA Segmento foi excluída com sucesso.");
+                    }
+                    break;
+
+                case 5: // Atualizar
+                    System.out.print("\nInforme O ID ou descricao da Segmento a ser atualizado: ");
+                    pesquisaSegmento = entrada.nextLine();
+                    // chamamos o método que pesquisa o estaDO
+                    temp = pesquisarSegmento(pesquisaSegmento);
+                    if (temp == null) { // não encotrado
+                        System.out.println("\nA Segmento " + pesquisaSegmento + " não foi encontrado.");
+                    } else {
+                        // mostra o estado encontrado
+                        System.out.println("\nDados atuais desta Segmento:");
+                        System.out.println("Id:          \t" + temp.getIdSegmentoEmpresa());
+                        System.out.println("Descrição:   \t" + temp.getDescricaoSegmento());
+
+                        System.out.println("\nInforme os novos dados:");
+                        System.out.print("\nNova Descrição da Segmento da empresa: ");
+                        String novaDescSegmento = entrada.nextLine();
+                        // atualizar os dados no ArrayList
+                        temp.setDescricaoSegmento(novaDescSegmento);
+                        System.out.println("\nA Segmento foi atualizada com sucesso!");
+                    }
+
+                    break;
+
+                case 6:
+                    return 0; // volta para o menu principal
+            }
+        }
+
+    }
+    private SegmentoEmpresa pesquisarSegmento(String pesquisaSegmento) {
+        SegmentoEmpresa seg = null;
+
+        // verifica
+        for(int i = 0; i < segmentos.size(); i++){
+            // pesquisa
+            if(Integer.toString(segmentos.get(i).getIdSegmentoEmpresa()).equals(pesquisaSegmento)){
+                return segmentos.get(i);
+            }
+            // pesquisar por desc
+            else if(segmentos.get(i).getDescricaoSegmento().contains(pesquisaSegmento)){
+                return segmentos.get(i);
+            }
+        }
+
+        return seg;
+    }
+
+    private void menuGerenciarEmpresa() {
+    }
+
     private int menuGerenciarUsuarios() {
         Usuario temp;
         String pesquisaUsuario;
@@ -604,7 +713,7 @@ public class main {
                         System.out.println("\nO Usuario não foi encontrado.");
                     }
                     else{
-                        // vamos excluir este Usuario. Atenção: Se houver Cidades relacionadas
+                        // vamos excluir este Usuario. Atenção: Se houver perfil relacionadas
                         // a este Usuario, então a exclusão destes deverá ser feita primeiro
                         if(temp.getPerfis(perfis).size() > 0){
                             System.out.println("\nOps! Este Usuario está relacionado a " + temp.getPerfis(perfis).size() + ". Exclua eles primeiro.");
@@ -623,25 +732,33 @@ public class main {
                     // chamamos o método que pesquisa o Usuario
                     temp = pesquisarUsuario(pesquisaUsuario);
                     if(temp == null){ // não encotrado
-                        System.out.println("\nO Usuario "+temp.getNomeUsuario() +" não foi encontrado.");
+                        System.out.println("\nO Usuario "+pesquisaUsuario+" não foi encontrado.");
                     }
                     else{
                         // mostra o Usuario encontrado
                         System.out.println("\nDados atuais deste Usuário:");
-                        System.out.println("\nId:           \t" + temp.getIdUsuario());
-                        System.out.println("Nome:           \t" + temp.getNomeUsuario());
-                        System.out.println("Descrição:      \t" + temp.getDescricaoUsuario());
-                        System.out.println("Qt Usuários:    \t" + temp.getUsuarios(usuarios).size());
+                        System.out.println("Id:           \t" + temp.getIdUsuario());
+                        System.out.println("Nome:         \t" + temp.getNome());
+                        System.out.println("CPF:          \t" + temp.getCPF());
+                        System.out.println("E-mail:       \t" + temp.getEmail());
+                        System.out.println("Qt Perfil:    \t" + temp.getPerfis(perfis).size());
                         System.out.println("==========================================================");
                         System.out.println("\nInforme os novos dados:");
-                        System.out.print("\nNovo Nome do Usuario: ");
-                        String novaNomeUsuario = entrada.nextLine();
-                        System.out.print("Nova UF do Usuario: ");
-                        String novoDescUsuario = entrada.nextLine();
+                        System.out.print("Nome: ");
+                        String novoNomeUsuario= entrada.nextLine();
+                        System.out.print("\nCPF: ");
+                        String novocpfUsuario = entrada.nextLine();
+                        System.out.print("\nE-mail: ");
+                        String novoEmailUsuario = entrada.nextLine();
+                        System.out.print("\nSenha: ");
+                        String novaSenhaUsuario = entrada.nextLine();
 
                         // atualizar os dados no ArrayList
-                        temp.setNomeUsuario(novaNomeUsuario);
-                        temp.setDescricaoUsuario(novoDescUsuario);
+                        temp.setNome(novoNomeUsuario);
+                        temp.setCPF(novocpfUsuario);
+                        temp.setEmail(novoEmailUsuario);
+                        temp.setSenha(novaSenhaUsuario);
+
                         System.out.println("\nUsuario atualizado com sucesso!");
                     }
 
@@ -713,7 +830,7 @@ public class main {
                     }
                     else{
                         for(int i = 0; i < perfis.size(); i++){
-                            temp = perfis.get(i); // obtém o autor da iteração atual
+                            temp = perfis.get(i); //
                             System.out.println("Id:           \t" + temp.getIdPerfil());
                             System.out.println("Nome:         \t" + temp.getNomePerfil());
                             System.out.println("Descrição:    \t" + temp.getDescricaoPerfil());
@@ -745,7 +862,7 @@ public class main {
                         System.out.println("\nO Perfil não foi encontrado.");
                     }
                     else{
-                        // vamos excluir este Perfil. Atenção: Se houver Cidades relacionadas
+                        // vamos excluir este Perfil. Atenção: Se houver usuario relacionadas
                         // a este Perfil, então a exclusão destes deverá ser feita primeiro
                         if(temp.getUsuarios(usuarios).size() > 0){
                             System.out.println("\nOps! Este Perfil está relacionado a " + temp.getUsuarios(usuarios).size() + ". Exclua eles primeiro.");
@@ -758,13 +875,13 @@ public class main {
 
                     break;
 
-                case 5: // vamos atualizar um autor
-                    System.out.print("\nInforme a UF ou descricao do Perfil a ser atualizado: ");
+                case 5: // atualizar um perfil
+                    System.out.print("\nInforme a ID ou descricao do Perfil a ser atualizado: ");
                     pesquisaPerfil = entrada.nextLine();
                     // chamamos o método que pesquisa o Perfil
                     temp = pesquisarPerfil(pesquisaPerfil);
                     if(temp == null){ // não encotrado
-                        System.out.println("\nO Perfil "+temp.getNomePerfil() +" não foi encontrado.");
+                        System.out.println("\nO Perfil "+pesquisaPerfil +" não foi encontrado.");
                     }
                     else{
                         // mostra o Perfil encontrado
