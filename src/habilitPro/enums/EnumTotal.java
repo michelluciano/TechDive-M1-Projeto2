@@ -52,11 +52,11 @@ public enum EnumTotal implements StringValueEnum{
 
     @Override
     public String getValue() {
-        return null;
+        return value;
     }
 
     @Override
     public String getDisplayName() {
-        return null;
+        return displayName;
     }
 }

@@ -14,8 +14,8 @@ import java.util.Scanner;
 public class HabilitPro {
 
     // ARRAYS PARA TESTE
-    private static ArrayList<Cidade> cidades = new ArrayList<>();// BANCO DE DADOS
-    private static ArrayList<Estado> estados = new ArrayList<>();// BANCO DE DADOS
+    public static ArrayList<Cidade> cidades = new ArrayList<>();// BANCO DE DADOS
+    public static ArrayList<Estado> estados = new ArrayList<>();// BANCO DE DADOS
     private static ArrayList<RegionalSenai> regionais = new ArrayList<>();// BANCO DE DADOS
     private static ArrayList<SegmentoEmpresa> segmentos = new ArrayList<>();// BANCO DE DADOS
     private static ArrayList<Empresa> empresas = new ArrayList<>();// BANCO DE DADOS
@@ -33,18 +33,36 @@ public class HabilitPro {
     public static void main(String[] args) {
         HabilitPro mainTestes = new HabilitPro();
         mainTestes.menuPrincipal();
-        //POPULAR ARRAY EMPRESA
-//        Empresa emp = new Empresa(1,"teste Empres","12346578912",EnumTotal.MATRIZ.getValue(),null,null,null,null,null);
-//        empresas.add(emp);
+        //POPULAR ARRAY Estado
+        Estado est1 = new Estado(1,"Santa Catarina","SC");
+        estados.add(est1);
+        //POPULAR ARRAY Cidade
+        Cidade cid1 = new Cidade(1,"Florianópolis",est1);
+        cidades.add(cid1);
+        //POPULAR ARRAY Regional
+        RegionalSenai reg1 = new RegionalSenai(1,"Litoral Sul");
+        regionais.add(reg1);
+        //POPULAR ARRAY Segmento Senai
+        SegmentoEmpresa seg1 = new SegmentoEmpresa(1,"Alimentos e Bebidas");
+        SegmentoEmpresa seg2 = new SegmentoEmpresa(2,"Celulose e Papel");
+        SegmentoEmpresa seg3 = new SegmentoEmpresa(3,"Construção");
+        SegmentoEmpresa seg4 = new SegmentoEmpresa(4,"Equipamentos elétricos");
+        SegmentoEmpresa seg5 = new SegmentoEmpresa(5,"Fumo");
+        segmentos.add(seg1);
+        segmentos.add(seg2);
+        segmentos.add(seg3);
+        segmentos.add(seg4);
+        segmentos.add(seg5);
+        //POPULAR ARRAY Regional
     }
 
     // método que exibe o menu principal do sistema
     public void menuPrincipal(){
 
         while(true){
-
             limpatela.limparTela();
-            System.out.println("\n:: H A B I L I T  P R O ::\n");
+            System.out.println("\n::            H A B I L I T  P R O          ::\n");
+            System.out.println("--------------------------------------------------");
             System.out.println("Bem-vindo(a) ao sistema.\nEscolha a opção desejada");
             System.out.println("1 - Estado");
             System.out.println("2 - Cidade");
@@ -59,6 +77,7 @@ public class HabilitPro {
             System.out.println("00 - Sair");
             System.out.print("Sua opção: ");
             // lê a opção do usuário
+            limpatela.limparTela();
             int opcao = Integer.parseInt(entrada.nextLine());
 
             switch(opcao){
@@ -845,8 +864,213 @@ public class HabilitPro {
     }
 
     private int menuGerenciarTrilha() {
+        Trilha temp; // serve para várias operações neste menu
+        String pesquisaTrilha;
+        String novoSatisfacao = null;
 
-        
+        while (true) { // mostra o menu de forma repetitiva até o usuário usar a opção de sair
+            System.out.println("\n:: G E R E N C I A R   T R I L H A ::\n");
+            System.out.println("Escolha a opção desejada");
+            System.out.println("1 - Nova Trilha");
+            System.out.println("2 - Listar Trilha");
+            System.out.println("3 - Pesquisar Trilha");
+            System.out.println("4 - Excluir Trilha");
+            System.out.println("6 - Voltar Menu Anterior");
+            System.out.print("Sua opção: ");
+            int opcao = Integer.parseInt(entrada.nextLine()); // lê a opção do usuário
+            limpatela.limparTela();
+            switch (opcao) {
+                case 1:
+                   // para cadastrar uma nova trilha precisa de uma Empresa
+                    Empresa empresa = null; // empresa
+                    while (empresa == null) {
+                        System.out.print("Informe o id, CNPJ ou nome da Empresa: ");
+                        String pesquisaEmpresa = entrada.nextLine();
+                        // método pesquisa
+                        empresa = pesquisarEmpresa(pesquisaEmpresa);
+                        if (empresa == null) { // Estado não encotrado
+                            System.out.print("\nEmpresa não encontrada.\n\nDigite 1 para pesquisar novamente ou 2 para voltar ao menu anterior: ");
+                            int opcaoTemp = Integer.parseInt(entrada.nextLine());
+                            if (opcaoTemp == 2) {
+                                return 1; // volta para o menu anterior
+                            }
+                        }
+                    }
+                    System.out.println("Empresa selecionado: " + empresa.getNomeEmpresa()+ " - " + empresa.getCNPJEmpresa());
+                    // fim para encontrar estado
+
+                    System.out.println("Digite o cargo/Ocupação:");
+                    String ocupacao= entrada.nextLine();
+
+                    System.out.print("Digite o Grau de Satisfação:\n1\n2\n3\n4\n5");
+                    int opSat = entrada.nextInt();
+                    while (opSat == 0) {
+                        if(opSat == 1){
+                            novoSatisfacao = (EnumTotal.SATISFACAO1.getDisplayName());
+                        }else if(opSat == 2){
+                            novoSatisfacao = (EnumTotal.SATISFACAO1.getDisplayName());
+                        }else if(opSat == 3){
+                            novoSatisfacao = (EnumTotal.SATISFACAO1.getDisplayName());
+                        }else if(opSat == 4){
+                            novoSatisfacao = (EnumTotal.SATISFACAO1.getDisplayName());
+                        }else if(opSat == 4){
+                            novoSatisfacao = (EnumTotal.SATISFACAO1.getDisplayName());
+                        }else{
+                            opSat = 1;
+
+                        }
+
+                    }
+
+                    System.out.println("Digite Anotações");
+                    String anotacoesTrilha = entrada.nextLine();
+
+                    String nomeTrilha = (ocupacao+empresa.getNomeEmpresa()+Trilha.serialOcupacao+ AnoCorrente.isAno());
+                    String apelidoTrilha = (ocupacao+Trilha.serialOcupacao);
+
+                    Trilha.serialTrilha++;
+                    Trilha tri = new Trilha(Trilha.serialTrilha,empresa,ocupacao,nomeTrilha,apelidoTrilha,novoSatisfacao,anotacoesTrilha);
+
+                    // e o adiciona no ArrayList de cidades
+                    trilhas.add(tri);
+
+                    System.out.println("\nA trilha foi cadastrada com sucesso");
+
+                    break;
+                case 2: //listar trilllhas
+                    if (trilhas.isEmpty()) {
+                        System.out.println("\nNão há nenhuma Trilha cadastrada!");
+                    } else {
+                        for (int i = 0; i < trilhas.size(); i++) {
+                            temp = trilhas.get(i);
+                            System.out.println("Id:                \t" + temp.getIdTrilha());
+                            System.out.println("Nome Empresa:      \t" + temp.getEmpresa().getNomeEmpresa());
+                            System.out.println("CNPJ Empresa:      \t" + temp.getEmpresa().getCNPJEmpresa());
+                            System.out.println("Ocupação:          \t" + temp.getOcupacao());
+                            System.out.println("Nome da Tilha      \t" + temp.getNome());
+                            System.out.println("Apelido da Tilha   \t" + temp.getApelido());
+                            System.out.println("Grau de Satisfação \t" + temp.getSatisfacao());
+                            System.out.println("Anotações da Tilha \t" + temp.getAnotacoes());
+                        }
+                    }
+                    break;
+
+                case 3: // vamos pesquisar
+                    System.out.print("\nInforme o ID ou nome da trilha: ");
+                    pesquisaTrilha = entrada.nextLine();
+                    // metodo pesquisa
+                    temp = pesquisarTrilha(pesquisaTrilha);
+                    if (temp == null) {
+                        System.out.println("\nA trilha não foi encontrado.");
+                    } else {
+                        // mostra encontrado
+                        System.out.println("Id:                \t" + temp.getIdTrilha());
+                        System.out.println("Nome Empresa:      \t" + temp.getEmpresa().getNomeEmpresa());
+                        System.out.println("CNPJ Empresa:      \t" + temp.getEmpresa().getCNPJEmpresa());
+                        System.out.println("Ocupação:          \t" + temp.getOcupacao());
+                        System.out.println("Nome da Tilha      \t" + temp.getNome());
+                        System.out.println("Apelido da Tilha   \t" + temp.getApelido());
+                        System.out.println("Grau de Satisfação \t" + temp.getSatisfacao());
+                        System.out.println("Anotações da Tilha \t" + temp.getAnotacoes());
+                    }
+
+                    break;
+
+                case 4: //excluir
+                    System.out.print("\nInforme o ID ou nome da trilha: ");
+                    pesquisaTrilha = entrada.nextLine();
+                    // metodo pesquisa
+                    temp = pesquisarTrilha(pesquisaTrilha);
+                    if (temp == null) {
+                        System.out.println("\nA trilha não foi encontrado.");
+                    } else {
+                        trilhas.remove(temp);
+                        System.out.println("\nTrilha excluída com sucesso!");
+                    }
+                    break;
+
+                case 5: //atualizar cidade
+                    System.out.print("\nInforme o ID ou nome da trilha: ");
+                    pesquisaTrilha = entrada.nextLine();
+                    // metodo pesquisa
+                    temp = pesquisarTrilha(pesquisaTrilha);
+                    if (temp == null) {
+                        System.out.println("\nA trilha não foi encontrado.");
+                    } else {
+                        // mostra o encontrado
+                        System.out.println("Id:                \t" + temp.getIdTrilha());
+                        System.out.println("Nome Empresa:      \t" + temp.getEmpresa().getNomeEmpresa());
+                        System.out.println("CNPJ Empresa:      \t" + temp.getEmpresa().getCNPJEmpresa());
+                        System.out.println("Ocupação:          \t" + temp.getOcupacao());
+                        System.out.println("Nome da Tilha      \t" + temp.getNome());
+                        System.out.println("Apelido da Tilha   \t" + temp.getApelido());
+                        System.out.println("Grau de Satisfação \t" + temp.getSatisfacao());
+                        System.out.println("Anotações da Tilha \t" + temp.getAnotacoes());
+                        System.out.println("===========================================================");
+                        System.out.print("\nNovo Nome da Cidade: ");
+                        String novoDescCidade = entrada.nextLine();
+
+                        // para cadastrar uma nova trilha precisa de uma Empresa
+                        empresa = null; // empresa
+                        while (empresa == null) {
+                            System.out.print("Informe o id, CNPJ ou nome da Empresa: ");
+                            String pesquisaEmpresa = entrada.nextLine();
+                            // método pesquisa
+                            empresa = pesquisarEmpresa(pesquisaEmpresa);
+                            if (empresa == null) { // Estado não encotrado
+                                System.out.print("\nEmpresa não encontrada.\n\nDigite 1 para pesquisar novamente ou 2 para voltar ao menu anterior: ");
+                                int opcaoTemp = Integer.parseInt(entrada.nextLine());
+                                if (opcaoTemp == 2) {
+                                    return 1; // volta para o menu anterior
+                                }
+                            }
+                        }
+                        System.out.println("Empresa selecionado: " + empresa.getNomeEmpresa()+ " - " + empresa.getCNPJEmpresa());
+                        // fim para encontrar estado
+
+                        System.out.println("Digite o cargo/Ocupação:");
+                        String novaocupacao= entrada.nextLine();
+
+                        System.out.print("Digite o Grau de Satisfação:\n1\n2\n3\n4\n5");
+                        int novaopSat = entrada.nextInt();
+                        while (novaopSat == 0) {
+                            if(novaopSat == 1){
+                                novoSatisfacao = (EnumTotal.SATISFACAO1.getDisplayName());
+                            }else if(novaopSat == 2){
+                                novoSatisfacao = (EnumTotal.SATISFACAO1.getDisplayName());
+                            }else if(novaopSat == 3){
+                                novoSatisfacao = (EnumTotal.SATISFACAO1.getDisplayName());
+                            }else if(novaopSat == 4){
+                                novoSatisfacao = (EnumTotal.SATISFACAO1.getDisplayName());
+                            }else if(novaopSat == 4){
+                                novoSatisfacao = (EnumTotal.SATISFACAO1.getDisplayName());
+                            }else{
+                                opSat = 1;
+
+                            }
+
+                        }
+
+                        System.out.println("Digite Anotações");
+                        String novaanotacoesTrilha = entrada.nextLine();
+
+                        String novanomeTrilha = (novaocupacao+empresa.getNomeEmpresa()+Trilha.serialOcupacao+ AnoCorrente.isAno());
+                        String movaapelidoTrilha = (novaocupacao+Trilha.serialOcupacao);
+
+                        // atualiza
+                        temp.setOcupacao(novaocupacao);
+                        temp.setNome(novanomeTrilha);
+                        temp.setApelido(movaapelidoTrilha);
+                        temp.setSatisfacao(novoSatisfacao);
+
+                        System.out.println("\nA Cidade atualizada com sucesso");
+                    }
+                    break;
+                case 6:
+                    return 1;
+            }
+        }
+
     }
     private Trilha pesquisarTrilha(String pesquisaTrilha) {
         Trilha tri = null;
