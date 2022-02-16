@@ -4,8 +4,10 @@ import habilitPro.Utils.AnoCorrente;
 import habilitPro.Utils.LimparTela;
 import habilitPro.enums.EnumTotal;
 
+import javax.naming.ldap.StartTlsRequest;
 import javax.swing.plaf.synth.Region;
 import java.sql.SQLOutput;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -84,10 +86,10 @@ public class HabilitPro {
                     // chama o menu de gerenciamento de multas
                     menuGerenciarTrabalhador();
                     break;
-//                case 7:
-//                    // chama o menu de gerenciamento de multas
-//                    menuGerenciarMultas();
-//                    break;
+                case 7:
+                    // chama o menu de gerenciamento de multas
+                    menuGerenciarTrilha();
+                    break;
                 case 8:
                     // chama o menu de gerenciamento de modulos
                     menuGerenciarModulo();
@@ -108,7 +110,7 @@ public class HabilitPro {
         }
     }
 
-    // METODOS DO MENU
+   // METODOS DO MENU
 
     private int menuGerenciarEstados() {
         Estado temp;
@@ -821,28 +823,6 @@ public class HabilitPro {
         }
 
     }
-
-    private Trilha pesquisarTrilha(String pesquisaTrilha) {
-        Trilha tri = null;
-        // verifica
-        for(int i = 0; i < trilhas.size(); i++){
-            // pesquisa por ID
-            if(Integer.toString(trilhas.get(i).getIdTrilha()).equals(pesquisaTrilha)){
-                return trilhas.get(i);
-            }
-            // pesquisar por nome
-            else if(trilhas.get(i).getNome().contains(pesquisaTrilha)){
-                return trilhas.get(i);
-            }
-            // pesquisar por nome
-            else if(trilhas.get(i).getApelido().contains(pesquisaTrilha)){
-                return trilhas.get(i);
-            }
-        }
-
-        return tri;
-    }
-
     private Empresa pesquisarEmpresa(String pesquisaEmpresa) {
         Empresa emp = null;
         // verifica
@@ -862,6 +842,31 @@ public class HabilitPro {
         }
 
         return emp;
+    }
+
+    private int menuGerenciarTrilha() {
+
+        
+    }
+    private Trilha pesquisarTrilha(String pesquisaTrilha) {
+        Trilha tri = null;
+        // verifica
+        for(int i = 0; i < trilhas.size(); i++){
+            // pesquisa por ID
+            if(Integer.toString(trilhas.get(i).getIdTrilha()).equals(pesquisaTrilha)){
+                return trilhas.get(i);
+            }
+            // pesquisar por nome
+            else if(trilhas.get(i).getNome().contains(pesquisaTrilha)){
+                return trilhas.get(i);
+            }
+            // pesquisar por nome
+            else if(trilhas.get(i).getApelido().contains(pesquisaTrilha)){
+                return trilhas.get(i);
+            }
+        }
+
+        return tri;
     }
 
     private int menuGerenciarTrabalhador() {
@@ -994,7 +999,186 @@ public class HabilitPro {
         return tra;
     }
 
-    private void menuGerenciarModulo() {
+    private int menuGerenciarModulo() {
+        Modulo temp;
+        String pesquisaTrabalhador;
+        while (true) {
+            System.out.println("\n:: G E R E N C I A R   M Ó D U L O S ::\n");
+            System.out.println("Escolha a opção desejada");
+            System.out.println("1 - Novo Módulo");
+            System.out.println("2 - Listar Módulos");
+            System.out.println("3 - Pesquisar Módulos");
+            System.out.println("4 - Excluir Módulo");
+            System.out.println("5 - Atualizar Módulor");
+            System.out.println("6 - Voltar Menu Anterior");
+            System.out.print("Sua opção: ");
+            int opcao = Integer.parseInt(entrada.nextLine());
+            limpatela.limparTela();
+
+            switch (opcao) {
+                case 1:// cadastrar
+                        // para cadastrar um novo modulo precisa de uma trilha
+                        Trilha trilha = null; // USUARIO
+                        while (trilha == null) {
+                            System.out.print("Informe o id, apelido ou nome da Trilha: ");
+                            String pesquisaTrilha = entrada.nextLine();
+                            // chamamos o método que pesquisa o autor
+                            trilha = pesquisarTrilha(pesquisaTrilha);
+                            if (trilha == null) { // perfil não encotrado
+                                System.out.print("\nTrilha não encontrado.\n\nDigite 1 para pesquisar novamente ou 2 para voltar ao menu anterior: ");
+                                int opcaoTemp = Integer.parseInt(entrada.nextLine());
+                                if (opcaoTemp == 2) {
+                                    return 1; // volta para o menu anterior
+                            }
+                        }
+                    }
+                    System.out.println("Trilha selecionada: " + trilha.getNome());
+                    // fim para encontrar estado
+
+                    System.out.print("Nome: ");
+                    String nomemodulo= entrada.nextLine();
+                    System.out.print("\nDescreva as habilidades do módulo: ");
+                    String habModulo = entrada.nextLine();
+                    System.out.print("\nDescreva qual a Tarefa de Validação do módulo: ");
+                    String tarValModulo = entrada.nextLine();
+                    System.out.print("\nPrazo Limite (em dias): ");
+                    int prazoLimiteModulo = entrada.nextInt();
+
+
+
+                    Modulo.serialModulo++;
+                    Modulo mod = new Modulo(Modulo.serialModulo,trilha,nomemodulo,habModulo, tarValModulo,prazoLimiteModulo,EnumTotal.NAOINICIADO);
+                    modulos.add(mod);
+
+                    System.out.println("\nO Módulo foi cadastrado com sucesso");
+
+                    break;
+                case 2:// listar
+                    if(modulos.isEmpty()){
+                        System.out.println("\nNão há nenhum Usuario cadastrado.");
+                    }
+                    else{
+                        for(int i = 0; i < modulos.size(); i++){
+                            temp = modulos.get(i); //
+                            System.out.println("Id:           \t" + temp.getIdModulo());
+                            System.out.println("Nome:         \t" + temp.getNome());
+                            System.out.println("Status:       \t" + temp.getStatus().getDisplayName());
+                            System.out.println("Habilidades:  \t" + temp.getHabilidades());
+                            System.out.println("Tarefa:       \t" + temp.getTarefaValidacao());
+                            System.out.println("Prazo Limite  \t" + temp.getPrazoLimite());
+                            System.out.println("Prazo Limite  \t" + temp.getDataHoraInicio());
+                            System.out.println("Prazo Limite  \t" + temp.getDataHoraFim());
+                        }
+                    }
+                    break;
+
+                case 3: // pesquisar
+                    System.out.print("\nInforme a ID ou Nome do Usuario: ");
+                    String pesquisaModulo = entrada.nextLine();
+                    // método que pesquisa o Usuario
+                    temp = pesquisarModulo(pesquisaModulo);
+                    if(temp == null){
+                        System.out.println("\nO Módulo não foi encontrado.");
+                    }
+                    else{
+                        // mostra o Usuario
+                        System.out.println("Id:           \t" + temp.getIdModulo());
+                        System.out.println("Nome:         \t" + temp.getNome());
+                        System.out.println("Status:       \t" + temp.getStatus().getDisplayName());
+                        System.out.println("Habilidades:  \t" + temp.getHabilidades());
+                        System.out.println("Tarefa:       \t" + temp.getTarefaValidacao());
+                        System.out.println("Prazo Limite  \t" + temp.getPrazoLimite());
+                        System.out.println("Prazo Limite  \t" + temp.getDataHoraInicio());
+                        System.out.println("Prazo Limite  \t" + temp.getDataHoraFim());
+                    }
+
+                    break;
+                case 4:// deletar
+                    System.out.print("\nInforme a ID ou Nome do Usuario: ");
+                    pesquisaModulo = entrada.nextLine();
+                    // método que pesquisa o Usuario
+                    temp = pesquisarModulo(pesquisaModulo);
+                    if(temp == null){
+                        System.out.println("\nO Módulo não foi encontrado.");
+                    }
+                    else{
+                            modulos.remove(temp);
+                            System.out.println("\nMódulo foi excluído com sucesso.");
+                    }
+
+                    break;
+
+                case 5: //atualizar
+                    System.out.print("\nInforme a ID ou Nome do Usuario: ");
+                    pesquisaModulo = entrada.nextLine();
+                    // método que pesquisa o Usuario
+                    temp = pesquisarModulo(pesquisaModulo);
+                    if(temp == null){
+                        System.out.println("\nO Módulo "+pesquisaModulo+" não foi encontrado.");
+                    }
+                    else{
+                        // mostra o Usuario encontrado
+                        System.out.println("\nDados atuais deste Usuário:");
+                        System.out.println("Id:           \t" + temp.getIdModulo());
+                        System.out.println("Nome:         \t" + temp.getNome());
+                        System.out.println("Status:       \t" + temp.getStatus().getDisplayName());
+                        System.out.println("Habilidades:  \t" + temp.getHabilidades());
+                        System.out.println("Tarefa:       \t" + temp.getTarefaValidacao());
+                        System.out.println("Prazo Limite  \t" + temp.getPrazoLimite());
+                        System.out.println("Prazo Limite  \t" + temp.getDataHoraInicio());
+                        System.out.println("Prazo Limite  \t" + temp.getDataHoraFim());
+                        System.out.println("==========================================================");
+                        System.out.println("\nInforme os novos dados:");
+                        System.out.print("Nome: ");
+                        String novonomemodulo= entrada.nextLine();
+                        System.out.print("Digite o Status atual:\n1 - Curso não iniciado\n2 - Curso em adamento\n3 - Em fase de avaliação\n4 - Fase de avaliação finalizada");
+                        EnumTotal novostatusmodulo = null;
+                        int opStatus = entrada.nextInt();
+                        while (opStatus == 0) {
+                            if(opStatus == 1){
+                            novostatusmodulo = EnumTotal.valueOf(EnumTotal.NAOINICIADO.getDisplayName());
+                            }else if(opStatus == 2){
+                            novostatusmodulo = EnumTotal.valueOf(EnumTotal.EMANDAMENTO.getDisplayName());
+                            }else if(opStatus == 3){
+                            novostatusmodulo = EnumTotal.valueOf(EnumTotal.FASEAVALIACAO.getDisplayName());
+                            }else if(opStatus == 4){
+                            novostatusmodulo = EnumTotal.valueOf(EnumTotal.AVALIACAOFINALIZADA.getDisplayName());
+                            }
+                        }
+
+
+
+                        System.out.print("\nDescreva as habilidades do módulo: ");
+                        String novohabModulo = entrada.nextLine();
+                        System.out.print("\nDescreva qual a Tarefa de Validação do módulo: ");
+                        String novotarValModulo = entrada.nextLine();
+                        System.out.print("\nPrazo Limite (em dias): ");
+                        int novoprazoLimiteModulo = entrada.nextInt();
+
+                        // atualizar os dados no ArrayList
+                        temp.setNome(novonomemodulo);
+                        temp.setStatus(novostatusmodulo);
+                        temp.setHabilidades(novohabModulo);
+                        temp.setTarefaValidacao(novotarValModulo);
+                        temp.setPrazoLimite(novoprazoLimiteModulo);
+                        if (novostatusmodulo.equals(EnumTotal.valueOf(EnumTotal.EMANDAMENTO.getDisplayName()))){
+                            temp.setDataHoraInicio(OffsetDateTime.now());
+                        }
+                        if (novostatusmodulo.equals(EnumTotal.valueOf(EnumTotal.AVALIACAOFINALIZADA.getDisplayName()))){
+                            temp.setDataHoraFim(OffsetDateTime.now());
+                        }
+
+
+                        System.out.println("\nUsuario atualizado com sucesso!");
+                    }
+
+                    break;
+
+                case 6:
+                    return 0; // volta para o menu principal
+            }
+        }
+
     }
     private Modulo pesquisarModulo(String pesquisaModulo) {
         Modulo mod = null;
@@ -1002,11 +1186,11 @@ public class HabilitPro {
         // verifica
         for(int i = 0; i < modulos.size(); i++){
             // pesquisa
-            if(Integer.toString(modulos.get(i).getIdPerfil()).equals(pesquisaPerfil)){
+            if(Integer.toString(modulos.get(i).getIdModulo()).equals(pesquisaModulo)){
                 return modulos.get(i);
             }
             // pesquisar por desc
-            else if(modulos.get(i).getDescricaoPerfil().contains(pesquisaPerfil)){
+            else if(modulos.get(i).getNome().contains(pesquisaModulo)){
                 return modulos.get(i);
             }
         }
@@ -1042,8 +1226,8 @@ public class HabilitPro {
                     System.out.print("\nSenha: ");
                     String senhaUsuario = entrada.nextLine();
 
-                    // para cadastrar uma nova cidade precisa de um ESTADO
-                    Perfil perfil = null; // ESTADO
+                    // para cadastrar um novo usuario precisa de um Perfil
+                    Perfil perfil = null; // USUARIO
                     while (perfil == null) {
                         System.out.print("Informe o id ou nome do Perfil: ");
                         String pesquisaPerfil = entrada.nextLine();
