@@ -16,14 +16,14 @@ public class HabilitPro {
     // ARRAYS PARA TESTE
     public static ArrayList<Cidade> cidades = new ArrayList<>();// BANCO DE DADOS
     public static ArrayList<Estado> estados = new ArrayList<>();// BANCO DE DADOS
-    private static ArrayList<RegionalSenai> regionais = new ArrayList<>();// BANCO DE DADOS
-    private static ArrayList<SegmentoEmpresa> segmentos = new ArrayList<>();// BANCO DE DADOS
-    private static ArrayList<Empresa> empresas = new ArrayList<>();// BANCO DE DADOS
-    private static ArrayList<Trabalhador> trabalhadores = new ArrayList<>();// BANCO DE DADOS
-    private static ArrayList<Trilha> trilhas = new ArrayList<>();// BANCO DE DADOS
-    private static ArrayList<Modulo> modulos = new ArrayList<>();// BANCO DE DADOS
-    private static ArrayList<Perfil> perfis = new ArrayList<>();// BANCO DE DADOS
-    private static ArrayList<Usuario> usuarios = new ArrayList<>();// BANCO DE DADOS
+    public static ArrayList<RegionalSenai> regionais = new ArrayList<>();// BANCO DE DADOS
+    public static ArrayList<SegmentoEmpresa> segmentos = new ArrayList<>();// BANCO DE DADOS
+    public static ArrayList<Empresa> empresas = new ArrayList<>();// BANCO DE DADOS
+    public static ArrayList<Trabalhador> trabalhadores = new ArrayList<>();// BANCO DE DADOS
+    public static ArrayList<Trilha> trilhas = new ArrayList<>();// BANCO DE DADOS
+    public static ArrayList<Modulo> modulos = new ArrayList<>();// BANCO DE DADOS
+    public static ArrayList<Perfil> perfis = new ArrayList<>();// BANCO DE DADOS
+    public static ArrayList<Usuario> usuarios = new ArrayList<>();// BANCO DE DADOS
     // FIM ARRAYS TESTE+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     // VARIAVEIS UTILs++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -31,39 +31,61 @@ public class HabilitPro {
     LimparTela limpatela = new LimparTela();
 
     public static void main(String[] args) {
-        HabilitPro mainTestes = new HabilitPro();
-        mainTestes.menuPrincipal();
+
         //POPULAR ARRAY Estado
-        Estado est1 = new Estado(1,"Santa Catarina","SC");
+        Estado est1 = new Estado(Estado.serialEstado++,"Santa Catarina","SC");
         estados.add(est1);
+        System.out.println("teste estado:"+ estados);
         //POPULAR ARRAY Cidade
-        Cidade cid1 = new Cidade(1,"Florianópolis",est1);
+        Cidade cid1 = new Cidade(Cidade.serialCidade++,"Florianópolis",est1);
         cidades.add(cid1);
         //POPULAR ARRAY Regional
-        RegionalSenai reg1 = new RegionalSenai(1,"Litoral Sul");
+        RegionalSenai reg1 = new RegionalSenai(RegionalSenai.serialRegional++,"Litoral Sul");
         regionais.add(reg1);
         //POPULAR ARRAY Segmento Senai
-        SegmentoEmpresa seg1 = new SegmentoEmpresa(1,"Alimentos e Bebidas");
-        SegmentoEmpresa seg2 = new SegmentoEmpresa(2,"Celulose e Papel");
-        SegmentoEmpresa seg3 = new SegmentoEmpresa(3,"Construção");
-        SegmentoEmpresa seg4 = new SegmentoEmpresa(4,"Equipamentos elétricos");
-        SegmentoEmpresa seg5 = new SegmentoEmpresa(5,"Fumo");
+        SegmentoEmpresa seg1 = new SegmentoEmpresa( SegmentoEmpresa.serialSegmento++,"Alimentos e Bebidas");
+        SegmentoEmpresa seg2 = new SegmentoEmpresa(SegmentoEmpresa.serialSegmento++,"Celulose e Papel");
+        SegmentoEmpresa seg3 = new SegmentoEmpresa(SegmentoEmpresa.serialSegmento++,"Construção");
+        SegmentoEmpresa seg4 = new SegmentoEmpresa(SegmentoEmpresa.serialSegmento++,"Equipamentos elétricos");
+        SegmentoEmpresa seg5 = new SegmentoEmpresa(SegmentoEmpresa.serialSegmento++,"Fumo");
         segmentos.add(seg1);
         segmentos.add(seg2);
         segmentos.add(seg3);
         segmentos.add(seg4);
         segmentos.add(seg5);
-        //POPULAR ARRAY Regional
+        //POPULAR ARRAY Empresa
+        Empresa emp1 = new Empresa(Empresa.serialEmpresa++, "Copos SA","CNPJEmpresa",EnumTotal.MATRIZ.getValue(),seg1,cid1,reg1);
+        Empresa emp2 = new Empresa(Empresa.serialEmpresa++,"Latas SA","CNPJEmpresa",EnumTotal.FILIAL.getValue(),"Filial - Norte",seg2,cid1,reg1);
+        empresas.add(emp1);
+        empresas.add(emp2);
+        //POPULAR ARRAY Trabalhador
+        Trabalhador trab1 = new Trabalhador(Trabalhador.serialTrabalhador++, "Jair Silva","12346578910","Aux Escritório");
+        trabalhadores.add(trab1);
+        //POPULAR ARRAY Trilha
+        Trilha tri = new Trilha(Trilha.serialTrilha++,emp2,"Auxiliar","nomeTrilha","apelidoTrilha",EnumTotal.SATISFACAO1.getDisplayName(),"Anotações da trilha teste");
+        trilhas.add(tri);
+        //POPULAR ARRAY Módulo
+        Modulo mod1 = new Modulo(Modulo.serialModulo++,tri,"nomemodulo","Habilidades descritas no Modulo", "tarefa de Validação do Modulo",50,EnumTotal.NAOINICIADO);
+        modulos.add(mod1);
+        //POPULAR ARRAY Perfil
+        Perfil per1 = new Perfil(Perfil.serialPerfil++, "Administrador","Perfil com capacidades de acesso a todos os modulos");
+        perfis.add(per1);
+        //POPULAR ARRAY Usuário
+        Usuario usu = new Usuario(Usuario.serialUsuario, "Usuario Admin","10987654321","admin@admin.com","Admin@123",per1);
+        usuarios.add(usu);
+
+        HabilitPro mainTestes = new HabilitPro();
+        mainTestes.menuPrincipal();
     }
 
     // método que exibe o menu principal do sistema
     public void menuPrincipal(){
 
         while(true){
-            limpatela.limparTela();
-            System.out.println("\n::            H A B I L I T  P R O          ::\n");
             System.out.println("--------------------------------------------------");
-            System.out.println("Bem-vindo(a) ao sistema.\nEscolha a opção desejada");
+            System.out.println("::              H A B I L I T  P R O            ::");
+            System.out.println("--------------------------------------------------");
+            System.out.println("\nBem-vindo(a) ao sistema. Escolha a opção desejada");
             System.out.println("1 - Estado");
             System.out.println("2 - Cidade");
             System.out.println("3 - Regional");
@@ -77,7 +99,7 @@ public class HabilitPro {
             System.out.println("00 - Sair");
             System.out.print("Sua opção: ");
             // lê a opção do usuário
-            limpatela.limparTela();
+            //limpatela.limparTela();
             int opcao = Integer.parseInt(entrada.nextLine());
 
             switch(opcao){
@@ -151,16 +173,18 @@ public class HabilitPro {
 
             switch (opcao){
                 case 1: // vamos cadastrar um novo autor
-                    System.out.print("\nDescrição: ");
+                    System.out.print("\nDescrição do Estado: ");
                     String descEstado = entrada.nextLine();
-                    System.out.print("UF: ");
+                    System.out.print("UF do Estado: ");
                     String ufEstado= entrada.nextLine();
 
                     Estado.serialEstado++;
                     Estado est = new Estado(Estado.serialEstado, descEstado,ufEstado);
                     estados.add(est);
+                    System.out.println("--------------------------------------------------");
+                    System.out.println("-      O Estado foi cadastrado com sucesso!      -");
+                    System.out.println("--------------------------------------------------");
 
-                    System.out.println("\nO Estado foi cadastrado com sucesso");
 
                     break;
 
@@ -931,7 +955,7 @@ public class HabilitPro {
                     Trilha.serialTrilha++;
                     Trilha tri = new Trilha(Trilha.serialTrilha,empresa,ocupacao,nomeTrilha,apelidoTrilha,novoSatisfacao,anotacoesTrilha);
 
-                    // e o adiciona no ArrayList de cidades
+                    // e o adiciona no ArrayList de trilhas
                     trilhas.add(tri);
 
                     System.out.println("\nA trilha foi cadastrada com sucesso");

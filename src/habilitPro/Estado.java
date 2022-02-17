@@ -60,4 +60,13 @@ public class Estado {
     public void setUfEstado(String ufEstado) {
         this.ufEstado = ufEstado;
     }
+
+    @Override
+    public String toString() {
+        return "Estado{" +
+                "idEstado=" + idEstado +
+                ", descEstado='" + descEstado + '\'' +
+                ", ufEstado='" + ufEstado + '\'' +
+                '}';
+    }
 }
