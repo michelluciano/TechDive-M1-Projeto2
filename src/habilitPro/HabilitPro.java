@@ -1501,10 +1501,19 @@ public class HabilitPro {
                     }
                     System.out.print("\nSenha: ");
                     String senhaUsuario = entrada.nextLine();
-
+                    //TODO: EXEMPLO DE VALIDAÇÂO DE ENTRADA DE senha, SE DER TEMPO COLOCO NOS OUTROS CAMPOS
+                    while(ValidaSenha.isSenha(senhaUsuario) == false){
+                        System.out.println("\nA senha digitado é inválido!!");
+                        System.out.print("\nDigite uma Senha: \n - com 8 caracteres ou mais\n - deve conter letras\n - deve conter numeros");
+                        senhaUsuario = entrada.nextLine();
+                    }
                     // para cadastrar um novo usuario precisa de um Perfil
                     Perfil perfil = null; // USUARIO
                     while (perfil == null) {
+                        System.out.println("Lista de Perfil");
+                        for(int i = 0; i < perfis.size(); i++){
+                            System.out.println("Nome Perfil: "+perfis.get(i).getIdPerfil()+" - "+perfis.get(i).getNomePerfil());
+                        }
                         System.out.print("Informe o id ou nome do Perfil: ");
                         String pesquisaPerfil = entrada.nextLine();
                         // chamamos o método que pesquisa o autor
