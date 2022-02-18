@@ -1,7 +1,6 @@
 package habilitPro;
 
-import habilitPro.Utils.AnoCorrente;
-import habilitPro.Utils.LimparTela;
+import habilitPro.Utils.*;
 import habilitPro.enums.EnumTotal;
 
 import javax.naming.ldap.StartTlsRequest;
@@ -33,11 +32,13 @@ public class HabilitPro {
     public static void main(String[] args) {
 
         //POPULAR ARRAY Estado
-        Estado est1 = new Estado(Estado.serialEstado++,"Santa Catarina","SC");
+        Estado.serialEstado++;
+        Estado est1 = new Estado(Estado.serialEstado,"Santa Catarina","SC");
         estados.add(est1);
         System.out.println("teste estado:"+ estados);
         //POPULAR ARRAY Cidade
-        Cidade cid1 = new Cidade(Cidade.serialCidade++,"Florianópolis",est1);
+        Cidade.serialCidade++;
+        Cidade cid1 = new Cidade(Cidade.serialCidade,"Florianópolis",est1);
         cidades.add(cid1);
         //POPULAR ARRAY Regional
         RegionalSenai reg1 = new RegionalSenai(RegionalSenai.serialRegional++,"Litoral Sul");
@@ -68,11 +69,21 @@ public class HabilitPro {
         Modulo mod1 = new Modulo(Modulo.serialModulo++,tri,"nomemodulo","Habilidades descritas no Modulo", "tarefa de Validação do Modulo",50,EnumTotal.NAOINICIADO);
         modulos.add(mod1);
         //POPULAR ARRAY Perfil
-        Perfil per1 = new Perfil(Perfil.serialPerfil++, "Administrador","Perfil com capacidades de acesso a todos os modulos");
+        Perfil.serialPerfil++;
+        Perfil per1 = new Perfil(Perfil.serialPerfil++, "Administrativo","Realizar cadastros gerais, parametrizações e emissão de relatórios");
         perfis.add(per1);
+        Perfil per2 = new Perfil(Perfil.serialPerfil++, "Operacional","Realizar processo de avaliação e emissão de relatórios");
+        perfis.add(per2);
+        Perfil per3 = new Perfil(Perfil.serialPerfil++, "EquipeRH","Acompanhar processo de avaliação e emissão de relatórios");
+        perfis.add(per3);
         //POPULAR ARRAY Usuário
-        Usuario usu = new Usuario(Usuario.serialUsuario, "Usuario Admin","10987654321","admin@admin.com","Admin@123",per1);
-        usuarios.add(usu);
+        Usuario.serialUsuario++;
+        Usuario usu1 = new Usuario(Usuario.serialUsuario, "Usuario Admin","10987654321","admin@admin.com","Admin@123",per1);
+        usuarios.add(usu1);
+        Usuario usu2 = new Usuario(Usuario.serialUsuario++, "Usuario Oper","10987654321","admin@admin.com","Admin@123",per2);
+        usuarios.add(usu2);
+        Usuario usu3 = new Usuario(Usuario.serialUsuario++, "Usuario RH","10987654321","admin@admin.com","Admin@123",per3);
+        usuarios.add(usu3);
 
         HabilitPro mainTestes = new HabilitPro();
         mainTestes.menuPrincipal();
@@ -169,12 +180,17 @@ public class HabilitPro {
             System.out.println("6 - Voltar Menu Anterior");
             System.out.print("Sua opção: ");
             int opcao = Integer.parseInt(entrada.nextLine());
-            limpatela.limparTela();
+            //limpatela.limparTela();
 
             switch (opcao){
                 case 1: // vamos cadastrar um novo autor
                     System.out.print("\nDescrição do Estado: ");
                     String descEstado = entrada.nextLine();
+                    //TODO: EXEMPLO DE VALIDAÇÂO DE ENTRADA DE STRING, SE DER TEMPO COLOCO NOS OUTROS CAMPOS
+                    while(ValidaCampoString.validaString(descEstado) == false){
+                        System.out.print("\nDigite uma descrição do Estado válida: ");
+                        descEstado = entrada.nextLine();
+                    }
                     System.out.print("UF do Estado: ");
                     String ufEstado= entrada.nextLine();
 
@@ -184,7 +200,6 @@ public class HabilitPro {
                     System.out.println("--------------------------------------------------");
                     System.out.println("-      O Estado foi cadastrado com sucesso!      -");
                     System.out.println("--------------------------------------------------");
-
 
                     break;
 
@@ -321,7 +336,7 @@ public class HabilitPro {
                     // para cadastrar uma nova cidade precisa de um ESTADO
                     Estado estado = null; // ESTADO
                     while (estado == null) {
-                        System.out.print("Informe o id ou nome do Estado: ");
+                        System.out.print("Informe o UF ou nome do Estado: ");
                         String pesquisaEstado = entrada.nextLine();
                         // chamamos o método que pesquisa o autor
                         estado = pesquisarEstado(pesquisaEstado);
@@ -358,7 +373,7 @@ public class HabilitPro {
                     break;
 
                 case 3: // vamos pesquisar cidade
-                    System.out.print("\nInforme o UF ou nome da Cidade: ");
+                    System.out.print("\nInforme o ID ou nome da Cidade: ");
                     pesquisaCidade = entrada.nextLine();
                     // metodo pesquisa
                     temp = pesquisarCidade(pesquisaCidade);
@@ -374,7 +389,7 @@ public class HabilitPro {
                     break;
 
                 case 4: //excluir cidade
-                    System.out.print("\nInforme o UF ou nome da cidade a ser excluída: ");
+                    System.out.print("\nInforme o ID ou nome da cidade a ser excluída: ");
                     pesquisaCidade = entrada.nextLine();
                     temp = pesquisarCidade(pesquisaCidade);
                     if(temp == null){ // cidade nao encontrada
@@ -387,7 +402,7 @@ public class HabilitPro {
                      break;
 
                 case 5: //atualizar cidade
-                    System.out.print("\nInforme o UF ou nome da cidade a ser atualizada: ");
+                    System.out.print("\nInforme o ID ou nome da cidade a ser atualizada: ");
                     pesquisaCidade = entrada.nextLine();
                     temp = pesquisarCidade(pesquisaCidade);
                     if(temp == null){ // cidade nao encontrada
@@ -504,11 +519,11 @@ public class HabilitPro {
                     System.out.print("\nInforme o ID ou descricao da Regional a ser excluído: ");
                     pesquisaRegional = entrada.nextLine();
                     temp = pesquisarRegionais(pesquisaRegional);
-                    if (temp == null) { // autor não encontrado
+                    if (temp == null) { // não encontrado
                         System.out.println("\nA Regional não foi encontrado.");
                     } else {
-                            estados.remove(temp);
-                            System.out.println("\nA Regional foi excluída com sucesso.");
+                        regionais.remove(temp);
+                        System.out.println("\nA Regional foi excluída com sucesso.");
                     }
 
                     break;
@@ -618,7 +633,7 @@ public class HabilitPro {
                     if (temp == null) { // autor não encontrado
                         System.out.println("\nA Segmento não foi encontrado.");
                     } else {
-                        estados.remove(temp);
+                        segmentos.remove(temp);
                         System.out.println("\nA Segmento foi excluída com sucesso.");
                     }
                     break;
@@ -1469,8 +1484,21 @@ public class HabilitPro {
 
                     System.out.print("\nCPF: ");
                     String cpfUsuario = entrada.nextLine();
+                    //TODO: EXEMPLO DE VALIDAÇÂO DE ENTRADA DE STRING, SE DER TEMPO COLOCO NOS OUTROS CAMPOS
+                    while(ValidarCPF.isCPF(cpfUsuario) == false){
+                        System.out.println("\nO CPF digitado é inválido!!");
+                        System.out.print("\nDigite um CPF válido: ");
+                        cpfUsuario = entrada.nextLine();
+                    }
+                    System.out.printf("\nCPF digitado: "+ ValidarCPF.imprimeCPF(cpfUsuario));
                     System.out.print("\nE-mail: ");
                     String emailUsuario = entrada.nextLine();
+                    //TODO: EXEMPLO DE VALIDAÇÂO DE ENTRADA DE email, SE DER TEMPO COLOCO NOS OUTROS CAMPOS
+                    while(ValidaEmail.isEmail(emailUsuario) == false){
+                        System.out.println("\nO EMAIL digitado é inválido!!");
+                        System.out.print("\nDigite um EMAIL válido: ");
+                        emailUsuario = entrada.nextLine();
+                    }
                     System.out.print("\nSenha: ");
                     String senhaUsuario = entrada.nextLine();
 
@@ -1511,7 +1539,7 @@ public class HabilitPro {
                             System.out.println("Nome:         \t" + temp.getNome());
                             System.out.println("CPF:          \t" + temp.getCPF());
                             System.out.println("E-mail:       \t" + temp.getEmail());
-                            System.out.println("Descrição:    \t" + temp.getPerfil());
+                            System.out.println("Descrição:    \t" + temp.getPerfil().getNomePerfil());
                         }
                     }
                     break;
@@ -1555,7 +1583,7 @@ public class HabilitPro {
                     break;
 
                 case 5: //atualizar
-                    System.out.print("\nInforme a UF ou descricao do Usuario a ser atualizado: ");
+                    System.out.print("\nInforme a ID ou descricao do Usuario a ser atualizado: ");
                     pesquisaUsuario = entrada.nextLine();
                     // chamamos o método que pesquisa o Usuario
                     temp = pesquisarUsuario(pesquisaUsuario);
@@ -1581,11 +1609,29 @@ public class HabilitPro {
                         System.out.print("\nSenha: ");
                         String novaSenhaUsuario = entrada.nextLine();
 
+                        // para cadastrar um novo usuario precisa de um Perfil
+                        Perfil perfilA = null; // USUARIO
+                        while (perfilA == null) {
+                            System.out.print("Informe o id ou nome do Perfil: ");
+                            String pesquisaPerfil = entrada.nextLine();
+                            // chamamos o método que pesquisa o autor
+                            perfilA = pesquisarPerfil(pesquisaPerfil);
+                            if (perfilA == null) { // perfil não encotrado
+                                System.out.print("\nPerfil não encontrado.\n\nDigite 1 para pesquisar novamente ou 2 para voltar ao menu anterior: ");
+                                int opcaoTemp = Integer.parseInt(entrada.nextLine());
+                                if (opcaoTemp == 2) {
+                                    return 1; // volta para o menu anterior
+                                }
+                            }
+                        }
+                        System.out.println("Perfil selecionado: " + perfilA.getNomePerfil());
+                        // fim para encontrar estado
                         // atualizar os dados no ArrayList
                         temp.setNome(novoNomeUsuario);
                         temp.setCPF(novocpfUsuario);
                         temp.setEmail(novoEmailUsuario);
                         temp.setSenha(novaSenhaUsuario);
+                        temp.setPerfil(perfilA);
 
                         System.out.println("\nUsuario atualizado com sucesso!");
                     }
@@ -1667,7 +1713,7 @@ public class HabilitPro {
                     break;
 
                 case 3:
-                    System.out.print("\nInforme a UF ou descrição do Perfil: ");
+                    System.out.print("\nInforme a ID ou descrição do Perfil: ");
                     pesquisaPerfil = entrada.nextLine();
                     // método que pesquisa o Perfil
                     temp = pesquisarPerfil(pesquisaPerfil);
@@ -1683,7 +1729,7 @@ public class HabilitPro {
 
                     break;
                 case 4:
-                    System.out.print("\nInforme a UF ou descricao do Perfil a ser excluído: ");
+                    System.out.print("\nInforme a ID ou descricao do Perfil a ser excluído: ");
                     pesquisaPerfil = entrada.nextLine();
                     temp = pesquisarPerfil(pesquisaPerfil);
                     if(temp == null){ // não encontrado
@@ -1693,7 +1739,7 @@ public class HabilitPro {
                         // vamos excluir este Perfil. Atenção: Se houver usuario relacionadas
                         // a este Perfil, então a exclusão destes deverá ser feita primeiro
                         if(temp.getUsuarios(usuarios).size() > 0){
-                            System.out.println("\nOps! Este Perfil está relacionado a " + temp.getUsuarios(usuarios).size() + ". Exclua eles primeiro.");
+                            System.out.println("\nOps! Este Perfil está relacionado a " + temp.getUsuarios(usuarios).size() + " usuario. Exclua eles primeiro.");
                         }
                         else{
                             perfis.remove(temp);
@@ -1722,7 +1768,7 @@ public class HabilitPro {
                         System.out.println("\nInforme os novos dados:");
                         System.out.print("\nNovo Nome do Perfil: ");
                         String novaNomePerfil = entrada.nextLine();
-                        System.out.print("Nova UF do Perfil: ");
+                        System.out.print("Nova Descrição do Perfil: ");
                         String novoDescPerfil = entrada.nextLine();
 
                         // atualizar os dados no ArrayList
@@ -1774,19 +1820,7 @@ public class HabilitPro {
 //        if (ValidaCNPJ.isCNPJ(CNPJ) == true)
 //            System.out.printf("%s\n", ValidaCNPJ.imprimeCNPJ(CNPJ));
 //        else System.out.printf("Erro, CNPJ inválido !!!\n");
-
-//        // TESTAR CPF
-//        //Scanner ler = new Scanner(System.in);
-//        String CPF = "56562632900";
-//        System.out.printf("Informe um CPF: ");
-//        System.out.println("O CPF informado foi "+ CPF);;
 //
-//        System.out.printf("\nResultado: ");
-//        // usando os métodos isCNPJ() e imprimeCNPJ() da classe "ValidaCNPJ"
-//        if (ValidarCPF.isCPF(CPF) == true)
-//            System.out.printf("%s\n", ValidarCPF.imprimeCPF(CPF));
-//        else System.out.printf("Erro, CPF inválido !!!\n");
-
 //        //Popular tabela Estado
 //
 //        Cidade cid1 = new Cidade(1,"Florianópolis");

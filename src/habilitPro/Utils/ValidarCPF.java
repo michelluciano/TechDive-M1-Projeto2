@@ -1,6 +1,7 @@
 package habilitPro.Utils;
 
 import java.util.InputMismatchException;
+import java.util.Scanner;
 
 public class ValidarCPF {
 
@@ -67,5 +68,19 @@ public class ValidarCPF {
                 CPF.substring(6, 9) + "-" + CPF.substring(9, 11));
 
     }
+
+//    public static void main(String[] args) {
+//         //TESTAR CPF
+//        Scanner ler = new Scanner(System.in);
+//        String CPF = "56562632900";
+//        System.out.printf("Informe um CPF: ");
+//        System.out.println("O CPF informado foi "+ CPF);;
+//
+//        System.out.printf("\nResultado: ");
+//        // usando os métodos isCNPJ() e imprimeCNPJ() da classe "ValidaCNPJ"
+//        if (ValidarCPF.isCPF(CPF) == true)
+//            System.out.printf("%s\n", ValidarCPF.imprimeCPF(CPF));
+//        else System.out.printf("Erro, CPF inválido !!!\n");
+//    }
 
 }
