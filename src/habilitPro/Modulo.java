@@ -13,7 +13,7 @@ public class Modulo {
     private String habilidades;
     private String tarefaValidacao;
     private int prazoLimite = 10; // 10 dias uteis
-    private EnumTotal status;
+    private String status;
     public static int serialModulo = 0;
     private OffsetDateTime dataHoraInicio;
     private OffsetDateTime dataHoraFim;
@@ -21,7 +21,7 @@ public class Modulo {
     public Modulo() {
     }
 
-    public Modulo(int idModulo, Trilha trilha, String nome, String habilidades, String tarefaValidacao, int prazoLimite, EnumTotal status) {
+    public Modulo(int idModulo, Trilha trilha, String nome, String habilidades, String tarefaValidacao, int prazoLimite, String status) {
         this.idModulo = idModulo;
         this.trilha = trilha;
         this.nome = nome;
@@ -79,11 +79,11 @@ public class Modulo {
         this.prazoLimite = prazoLimite;
     }
 
-    public EnumTotal getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(EnumTotal status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

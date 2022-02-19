@@ -10,6 +10,7 @@ public class Usuario {
     private String CPF;
     private String email;
     private String senha;
+    //private ArrayList<Perfil> perfilUsu = new ArrayList<>();
     private Perfil perfil;
     public static int serialUsuario =0;
 
@@ -34,6 +35,10 @@ public class Usuario {
         }
         return perfisTemp;
     } // fim array
+
+//    public void setPerfil(ArrayList<Perfil> perfil) {
+//        this.perfil = perfil;
+//    }
 
     public int getIdUsuario() {
         return idUsuario;

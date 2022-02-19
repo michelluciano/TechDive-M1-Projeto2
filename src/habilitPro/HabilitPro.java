@@ -66,7 +66,7 @@ public class HabilitPro {
         Trilha tri = new Trilha(Trilha.serialTrilha++,emp2,"Auxiliar","nomeTrilha","apelidoTrilha",EnumTotal.SATISFACAO1.getDisplayName(),"Anotações da trilha teste");
         trilhas.add(tri);
         //POPULAR ARRAY Módulo
-        Modulo mod1 = new Modulo(Modulo.serialModulo++,tri,"nomemodulo","Habilidades descritas no Modulo", "tarefa de Validação do Modulo",50,EnumTotal.NAOINICIADO);
+        Modulo mod1 = new Modulo(Modulo.serialModulo++,tri,"nomemodulo","Habilidades descritas no Modulo", "tarefa de Validação do Modulo",50,EnumTotal.NAOINICIADO.getDisplayName());
         modulos.add(mod1);
         //POPULAR ARRAY Perfil
         Perfil.serialPerfil++;
@@ -1154,6 +1154,13 @@ public class HabilitPro {
                     String nomeTrabalhador = entrada.nextLine();
                     System.out.print("\nCPF: ");
                     String CPFTrabalhador = entrada.nextLine();
+                    //TODO : valida CPF ( RN04-016)
+                    while(ValidarCPF.isCPF(CPFTrabalhador) == false){
+                        System.out.println("\nO CPF digitado é inválido!!");
+                        System.out.print("\nDigite um CPF válido: ");
+                        CPFTrabalhador = entrada.nextLine();
+                    }
+                    System.out.printf("\nCPF digitado: "+ ValidarCPF.imprimeCPF(CPFTrabalhador));
                     System.out.print("\nFunção: ");
                     String funcaoTrabalhador = entrada.nextLine();
 
@@ -1200,7 +1207,8 @@ public class HabilitPro {
                     if (temp == null) { // não encontrado
                         System.out.println("\nTrabalhador não encontrado.");
                     } else {
-                        estados.remove(temp);
+                        System.out.println("Trabalhador excluido:"+temp.getNome());
+                        trabalhadores.remove(temp);
                         System.out.println("\nTrabalhador foi excluída com sucesso.");
                     }
 
@@ -1265,6 +1273,7 @@ public class HabilitPro {
     private int menuGerenciarModulo() {
         Modulo temp;
         String pesquisaTrabalhador;
+        String novostatusmodulo = null;
         while (true) {
             System.out.println("\n:: G E R E N C I A R   M Ó D U L O S ::\n");
             System.out.println("Escolha a opção desejada");
@@ -1310,7 +1319,7 @@ public class HabilitPro {
 
 
                     Modulo.serialModulo++;
-                    Modulo mod = new Modulo(Modulo.serialModulo,trilha,nomemodulo,habModulo, tarValModulo,prazoLimiteModulo,EnumTotal.NAOINICIADO);
+                    Modulo mod = new Modulo(Modulo.serialModulo,trilha,nomemodulo,habModulo, tarValModulo,prazoLimiteModulo,EnumTotal.NAOINICIADO.getDisplayName());
                     modulos.add(mod);
 
                     System.out.println("\nO Módulo foi cadastrado com sucesso");
@@ -1318,19 +1327,19 @@ public class HabilitPro {
                     break;
                 case 2:// listar
                     if(modulos.isEmpty()){
-                        System.out.println("\nNão há nenhum Usuario cadastrado.");
+                        System.out.println("\nNão há nenhum Módulo cadastrado.");
                     }
                     else{
                         for(int i = 0; i < modulos.size(); i++){
                             temp = modulos.get(i); //
-                            System.out.println("Id:           \t" + temp.getIdModulo());
-                            System.out.println("Nome:         \t" + temp.getNome());
-                            System.out.println("Status:       \t" + temp.getStatus().getDisplayName());
-                            System.out.println("Habilidades:  \t" + temp.getHabilidades());
-                            System.out.println("Tarefa:       \t" + temp.getTarefaValidacao());
-                            System.out.println("Prazo Limite  \t" + temp.getPrazoLimite());
-                            System.out.println("Prazo Limite  \t" + temp.getDataHoraInicio());
-                            System.out.println("Prazo Limite  \t" + temp.getDataHoraFim());
+                            System.out.println("Id:              \t" + temp.getIdModulo());
+                            System.out.println("Nome:            \t" + temp.getNome());
+                            System.out.println("Status:          \t" + temp.getStatus());
+                            System.out.println("Habilidades:     \t" + temp.getHabilidades());
+                            System.out.println("Tarefa:          \t" + temp.getTarefaValidacao());
+                            System.out.println("Prazo Limite     \t" + temp.getPrazoLimite());
+                            System.out.println("Data-Hora Início \t" + temp.getDataHoraInicio());
+                            System.out.println("Data-Hora Fim    \t" + temp.getDataHoraFim());
                         }
                     }
                     break;
@@ -1347,7 +1356,7 @@ public class HabilitPro {
                         // mostra o Usuario
                         System.out.println("Id:           \t" + temp.getIdModulo());
                         System.out.println("Nome:         \t" + temp.getNome());
-                        System.out.println("Status:       \t" + temp.getStatus().getDisplayName());
+                        System.out.println("Status:       \t" + temp.getStatus());
                         System.out.println("Habilidades:  \t" + temp.getHabilidades());
                         System.out.println("Tarefa:       \t" + temp.getTarefaValidacao());
                         System.out.println("Prazo Limite  \t" + temp.getPrazoLimite());
@@ -1384,7 +1393,7 @@ public class HabilitPro {
                         System.out.println("\nDados atuais deste Usuário:");
                         System.out.println("Id:           \t" + temp.getIdModulo());
                         System.out.println("Nome:         \t" + temp.getNome());
-                        System.out.println("Status:       \t" + temp.getStatus().getDisplayName());
+                        System.out.println("Status:       \t" + temp.getStatus());
                         System.out.println("Habilidades:  \t" + temp.getHabilidades());
                         System.out.println("Tarefa:       \t" + temp.getTarefaValidacao());
                         System.out.println("Prazo Limite  \t" + temp.getPrazoLimite());
@@ -1394,40 +1403,38 @@ public class HabilitPro {
                         System.out.println("\nInforme os novos dados:");
                         System.out.print("Nome: ");
                         String novonomemodulo= entrada.nextLine();
-                        System.out.print("Digite o Status atual:\n1 - Curso não iniciado\n2 - Curso em adamento\n3 - Em fase de avaliação\n4 - Fase de avaliação finalizada");
-                        EnumTotal novostatusmodulo = null;
-                        int opStatus = entrada.nextInt();
-                        while (opStatus == 0) {
-                            if(opStatus == 1){
-                            novostatusmodulo = EnumTotal.valueOf(EnumTotal.NAOINICIADO.getDisplayName());
-                            }else if(opStatus == 2){
-                            novostatusmodulo = EnumTotal.valueOf(EnumTotal.EMANDAMENTO.getDisplayName());
-                            }else if(opStatus == 3){
-                            novostatusmodulo = EnumTotal.valueOf(EnumTotal.FASEAVALIACAO.getDisplayName());
-                            }else if(opStatus == 4){
-                            novostatusmodulo = EnumTotal.valueOf(EnumTotal.AVALIACAOFINALIZADA.getDisplayName());
-                            }
-                        }
-
-
-
-                        System.out.print("\nDescreva as habilidades do módulo: ");
+                       System.out.print("\nDescreva as habilidades do módulo: ");
                         String novohabModulo = entrada.nextLine();
                         System.out.print("\nDescreva qual a Tarefa de Validação do módulo: ");
                         String novotarValModulo = entrada.nextLine();
                         System.out.print("\nPrazo Limite (em dias): ");
                         int novoprazoLimiteModulo = entrada.nextInt();
 
+                        System.out.print("Digite o Status atual:\n1 - Curso não iniciado\n2 - Curso em adamento\n3 - Em fase de avaliação\n4 - Fase de avaliação finalizada\n");
+
+                        int opStatus = entrada.nextInt();
+                        entrada.nextLine();
+                            if(opStatus == 1){
+                                temp.setStatus(EnumTotal.NAOINICIADO.getDisplayName());
+                            }else if(opStatus == 2){
+                                temp.setStatus(EnumTotal.EMANDAMENTO.getDisplayName());
+                            }else if(opStatus == 3){
+                                temp.setStatus(EnumTotal.FASEAVALIACAO.getDisplayName());
+                            }else if(opStatus == 4){
+                                temp.setStatus(EnumTotal.AVALIACAOFINALIZADA.getDisplayName());
+                            }
+
                         // atualizar os dados no ArrayList
                         temp.setNome(novonomemodulo);
-                        temp.setStatus(novostatusmodulo);
+
                         temp.setHabilidades(novohabModulo);
                         temp.setTarefaValidacao(novotarValModulo);
                         temp.setPrazoLimite(novoprazoLimiteModulo);
-                        if (novostatusmodulo.equals(EnumTotal.valueOf(EnumTotal.EMANDAMENTO.getDisplayName()))){
+                        if (temp.getStatus().equals(EnumTotal.EMANDAMENTO.getDisplayName())){
                             temp.setDataHoraInicio(OffsetDateTime.now());
+
                         }
-                        if (novostatusmodulo.equals(EnumTotal.valueOf(EnumTotal.AVALIACAOFINALIZADA.getDisplayName()))){
+                        if (temp.getStatus().equals(EnumTotal.AVALIACAOFINALIZADA.getDisplayName())){
                             temp.setDataHoraFim(OffsetDateTime.now());
                         }
 
