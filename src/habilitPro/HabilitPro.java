@@ -41,10 +41,12 @@ public class HabilitPro {
         Cidade cid1 = new Cidade(Cidade.serialCidade,"Florianópolis",est1);
         cidades.add(cid1);
         //POPULAR ARRAY Regional
-        RegionalSenai reg1 = new RegionalSenai(RegionalSenai.serialRegional++,"Litoral Sul");
+        RegionalSenai.serialRegional++;
+        RegionalSenai reg1 = new RegionalSenai(RegionalSenai.serialRegional,"Litoral Sul");
         regionais.add(reg1);
         //POPULAR ARRAY Segmento Senai
-        SegmentoEmpresa seg1 = new SegmentoEmpresa( SegmentoEmpresa.serialSegmento++,"Alimentos e Bebidas");
+        SegmentoEmpresa.serialSegmento++;
+        SegmentoEmpresa seg1 = new SegmentoEmpresa(SegmentoEmpresa.serialSegmento,"Alimentos e Bebidas");
         SegmentoEmpresa seg2 = new SegmentoEmpresa(SegmentoEmpresa.serialSegmento++,"Celulose e Papel");
         SegmentoEmpresa seg3 = new SegmentoEmpresa(SegmentoEmpresa.serialSegmento++,"Construção");
         SegmentoEmpresa seg4 = new SegmentoEmpresa(SegmentoEmpresa.serialSegmento++,"Equipamentos elétricos");
@@ -55,34 +57,43 @@ public class HabilitPro {
         segmentos.add(seg4);
         segmentos.add(seg5);
         //POPULAR ARRAY Empresa
-        Empresa emp1 = new Empresa(Empresa.serialEmpresa++, "Copos SA","CNPJEmpresa",EnumTotal.MATRIZ.getValue(),seg1,cid1,reg1);
-        Empresa emp2 = new Empresa(Empresa.serialEmpresa++,"Latas SA","CNPJEmpresa",EnumTotal.FILIAL.getValue(),"Filial - Norte",seg2,cid1,reg1);
+        Empresa.serialEmpresa++;
+        Empresa emp1 = new Empresa(Empresa.serialEmpresa, "Copos SA","CNPJEmpresa",EnumTotal.MATRIZ.getValue(),seg1,cid1,reg1);
         empresas.add(emp1);
+        Empresa.serialEmpresa++;
+        Empresa emp2 = new Empresa(Empresa.serialEmpresa++,"Latas SA","CNPJEmpresa",EnumTotal.FILIAL.getValue(),"Filial - Norte",seg2,cid1,reg1);
         empresas.add(emp2);
         //POPULAR ARRAY Trabalhador
-        Trabalhador trab1 = new Trabalhador(Trabalhador.serialTrabalhador++, "Jair Silva","12346578910","Aux Escritório");
+        Trabalhador.serialTrabalhador++;
+        Trabalhador trab1 = new Trabalhador(Trabalhador.serialTrabalhador, "Jair Silva","12346578910","Aux Escritório");
         trabalhadores.add(trab1);
         //POPULAR ARRAY Trilha
-        Trilha tri = new Trilha(Trilha.serialTrilha++,emp2,"Auxiliar","nomeTrilha","apelidoTrilha",EnumTotal.SATISFACAO1.getDisplayName(),"Anotações da trilha teste");
+        Trilha.serialTrilha++;
+        Trilha tri = new Trilha(Trilha.serialTrilha,emp2,"Auxiliar","nomeTrilha","apelidoTrilha",1,"Anotações da trilha teste");
         trilhas.add(tri);
         //POPULAR ARRAY Módulo
-        Modulo mod1 = new Modulo(Modulo.serialModulo++,tri,"nomemodulo","Habilidades descritas no Modulo", "tarefa de Validação do Modulo",50,EnumTotal.NAOINICIADO.getDisplayName());
+        Modulo.serialModulo++;
+        Modulo mod1 = new Modulo(Modulo.serialModulo,tri,"nomemodulo","Habilidades descritas no Modulo", "tarefa de Validação do Modulo",50,EnumTotal.NAOINICIADO.getDisplayName());
         modulos.add(mod1);
         //POPULAR ARRAY Perfil
         Perfil.serialPerfil++;
-        Perfil per1 = new Perfil(Perfil.serialPerfil++, "Administrativo","Realizar cadastros gerais, parametrizações e emissão de relatórios");
+        Perfil per1 = new Perfil(Perfil.serialPerfil, "Administrativo","Realizar cadastros gerais, parametrizações e emissão de relatórios");
         perfis.add(per1);
-        Perfil per2 = new Perfil(Perfil.serialPerfil++, "Operacional","Realizar processo de avaliação e emissão de relatórios");
+        Perfil.serialPerfil++;
+        Perfil per2 = new Perfil(Perfil.serialPerfil, "Operacional","Realizar processo de avaliação e emissão de relatórios");
         perfis.add(per2);
-        Perfil per3 = new Perfil(Perfil.serialPerfil++, "EquipeRH","Acompanhar processo de avaliação e emissão de relatórios");
+        Perfil.serialPerfil++;
+        Perfil per3 = new Perfil(Perfil.serialPerfil, "EquipeRH","Acompanhar processo de avaliação e emissão de relatórios");
         perfis.add(per3);
         //POPULAR ARRAY Usuário
         Usuario.serialUsuario++;
         Usuario usu1 = new Usuario(Usuario.serialUsuario, "Usuario Admin","10987654321","admin@admin.com","Admin@123",per1);
         usuarios.add(usu1);
-        Usuario usu2 = new Usuario(Usuario.serialUsuario++, "Usuario Oper","10987654321","admin@admin.com","Admin@123",per2);
+        Usuario.serialUsuario++;
+        Usuario usu2 = new Usuario(Usuario.serialUsuario, "Usuario Oper","10987654321","admin@admin.com","Admin@123",per2);
         usuarios.add(usu2);
-        Usuario usu3 = new Usuario(Usuario.serialUsuario++, "Usuario RH","10987654321","admin@admin.com","Admin@123",per3);
+        Usuario.serialUsuario++;
+        Usuario usu3 = new Usuario(Usuario.serialUsuario, "Usuario RH","10987654321","admin@admin.com","Admin@123",per3);
         usuarios.add(usu3);
 
         HabilitPro mainTestes = new HabilitPro();
@@ -905,7 +916,8 @@ public class HabilitPro {
     private int menuGerenciarTrilha() {
         Trilha temp; // serve para várias operações neste menu
         String pesquisaTrilha;
-        String novoSatisfacao = null;
+        int novoSatisfacao;
+        int opSat =0;
 
         while (true) { // mostra o menu de forma repetitiva até o usuário usar a opção de sair
             System.out.println("\n:: G E R E N C I A R   T R I L H A ::\n");
@@ -923,12 +935,13 @@ public class HabilitPro {
                    // para cadastrar uma nova trilha precisa de uma Empresa
                     Empresa empresa = null; // empresa
                     while (empresa == null) {
-                        System.out.print("Informe o id, CNPJ ou nome da Empresa: ");
+                        System.out.println("Para cadastrar uma nova trilha precisa de uma Empresa");
+                        System.out.println("Informe o id, CNPJ ou nome da Empresa: ");
                         String pesquisaEmpresa = entrada.nextLine();
                         // método pesquisa
                         empresa = pesquisarEmpresa(pesquisaEmpresa);
                         if (empresa == null) { // Estado não encotrado
-                            System.out.print("\nEmpresa não encontrada.\n\nDigite 1 para pesquisar novamente ou 2 para voltar ao menu anterior: ");
+                            System.out.print("\nEmpresa não encontrada. Digite:\n 1 para pesquisar novamente\n 2 para voltar ao menu anterior: ");
                             int opcaoTemp = Integer.parseInt(entrada.nextLine());
                             if (opcaoTemp == 2) {
                                 return 1; // volta para o menu anterior
@@ -941,34 +954,13 @@ public class HabilitPro {
                     System.out.println("Digite o cargo/Ocupação:");
                     String ocupacao= entrada.nextLine();
 
-                    System.out.print("Digite o Grau de Satisfação:\n1\n2\n3\n4\n5");
-                    int opSat = entrada.nextInt();
-                    while (opSat == 0) {
-                        if(opSat == 1){
-                            novoSatisfacao = (EnumTotal.SATISFACAO1.getDisplayName());
-                        }else if(opSat == 2){
-                            novoSatisfacao = (EnumTotal.SATISFACAO1.getDisplayName());
-                        }else if(opSat == 3){
-                            novoSatisfacao = (EnumTotal.SATISFACAO1.getDisplayName());
-                        }else if(opSat == 4){
-                            novoSatisfacao = (EnumTotal.SATISFACAO1.getDisplayName());
-                        }else if(opSat == 4){
-                            novoSatisfacao = (EnumTotal.SATISFACAO1.getDisplayName());
-                        }else{
-                            opSat = 1;
-
-                        }
-
-                    }
-
-                    System.out.println("Digite Anotações");
-                    String anotacoesTrilha = entrada.nextLine();
-
-                    String nomeTrilha = (ocupacao+empresa.getNomeEmpresa()+Trilha.serialOcupacao+ AnoCorrente.isAno());
+                    Trilha.serialTrilha++;
+                    String nomeTrilha = (ocupacao+empresa.getNomeEmpresa()+Trilha.serialOcupacao+AnoCorrente.isAno());
+                    nomeTrilha = nomeTrilha.replaceAll(" ", "");
+                    Trilha.serialOcupacao++;
                     String apelidoTrilha = (ocupacao+Trilha.serialOcupacao);
 
-                    Trilha.serialTrilha++;
-                    Trilha tri = new Trilha(Trilha.serialTrilha,empresa,ocupacao,nomeTrilha,apelidoTrilha,novoSatisfacao,anotacoesTrilha);
+                    Trilha tri = new Trilha(Trilha.serialTrilha,empresa,ocupacao,nomeTrilha,apelidoTrilha,0,"");
 
                     // e o adiciona no ArrayList de trilhas
                     trilhas.add(tri);
@@ -990,6 +982,7 @@ public class HabilitPro {
                             System.out.println("Apelido da Tilha   \t" + temp.getApelido());
                             System.out.println("Grau de Satisfação \t" + temp.getSatisfacao());
                             System.out.println("Anotações da Tilha \t" + temp.getAnotacoes());
+                            System.out.println("-------------------------------------------------------\n");
                         }
                     }
                     break;
@@ -1029,6 +1022,9 @@ public class HabilitPro {
                     break;
 
                 case 5: //atualizar cidade
+                    Usuario usuarioTrilha = null;
+                    String novasatisfacao;
+                    String novaanotacoesTrilha;
                     System.out.print("\nInforme o ID ou nome da trilha: ");
                     pesquisaTrilha = entrada.nextLine();
                     // metodo pesquisa
@@ -1069,40 +1065,27 @@ public class HabilitPro {
 
                         System.out.println("Digite o cargo/Ocupação:");
                         String novaocupacao= entrada.nextLine();
-
-                        System.out.print("Digite o Grau de Satisfação:\n1\n2\n3\n4\n5");
-                        int novaopSat = entrada.nextInt();
-                        while (novaopSat == 0) {
-                            if(novaopSat == 1){
-                                novoSatisfacao = (EnumTotal.SATISFACAO1.getDisplayName());
-                            }else if(novaopSat == 2){
-                                novoSatisfacao = (EnumTotal.SATISFACAO1.getDisplayName());
-                            }else if(novaopSat == 3){
-                                novoSatisfacao = (EnumTotal.SATISFACAO1.getDisplayName());
-                            }else if(novaopSat == 4){
-                                novoSatisfacao = (EnumTotal.SATISFACAO1.getDisplayName());
-                            }else if(novaopSat == 4){
-                                novoSatisfacao = (EnumTotal.SATISFACAO1.getDisplayName());
-                            }else{
-                                opSat = 1;
-
+                        System.out.print("Digite o Grau de Satisfação:\n1 - 2 - 3 - 4 - 5");
+                        novasatisfacao = entrada.nextLine();
+                        //TODO: [RN02-05] = OK
+                        if(usuarioTrilha.getPerfil().getNomePerfil().equals("Operacional")){
+                            //TODO [RN02-04] = OK
+                            while(ValidaCampoInt.validaInt(novasatisfacao)  == false){
+                                System.out.println("\nO valor digitado é inválido!!");
+                                System.out.print("\nDigite um valor válido: ");
+                                novasatisfacao = entrada.nextLine();
                             }
 
+                            System.out.println("Digite Anotações");
+                            novaanotacoesTrilha = entrada.nextLine();
+                            temp.setAnotacoes(novaanotacoesTrilha);
+                            temp.setSatisfacao(Integer.parseInt(novasatisfacao));
                         }
-
-                        System.out.println("Digite Anotações");
-                        String novaanotacoesTrilha = entrada.nextLine();
-
-                        String novanomeTrilha = (novaocupacao+empresa.getNomeEmpresa()+Trilha.serialOcupacao+ AnoCorrente.isAno());
-                        String movaapelidoTrilha = (novaocupacao+Trilha.serialOcupacao);
 
                         // atualiza
                         temp.setOcupacao(novaocupacao);
-                        temp.setNome(novanomeTrilha);
-                        temp.setApelido(movaapelidoTrilha);
-                        temp.setSatisfacao(novoSatisfacao);
 
-                        System.out.println("\nA Cidade atualizada com sucesso");
+                        System.out.println("\nA Trilha atualizada com sucesso");
                     }
                     break;
                 case 6:
@@ -1319,10 +1302,12 @@ public class HabilitPro {
 
 
                     Modulo.serialModulo++;
+                    //TODO:
                     Modulo mod = new Modulo(Modulo.serialModulo,trilha,nomemodulo,habModulo, tarValModulo,prazoLimiteModulo,EnumTotal.NAOINICIADO.getDisplayName());
                     modulos.add(mod);
 
                     System.out.println("\nO Módulo foi cadastrado com sucesso");
+                    entrada.nextLine();
 
                     break;
                 case 2:// listar

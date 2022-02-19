@@ -19,6 +19,7 @@ public enum EnumTotal implements StringValueEnum{
     FILIAL("FILIAL", "Filial"),
 
     //ENUM SATISFACAO
+
     SATISFACAO1("1","Satisfação 1"),
     SATISFACAO2("2","Satisfação 2"),
     SATISFACAO3("3","Satisfação 3"),
@@ -26,6 +27,7 @@ public enum EnumTotal implements StringValueEnum{
     SATISFACAO5("5","Satisfação 5"),
 
     //ENUM MÒDULO
+    //TODO: RN03-02
     NAOINICIADO("NAOINICIADO", "Curso não iniciado"),
     EMANDAMENTO("EMANDAMENTO", "Curso em andamento"),
     FASEAVALIACAO("FASEAVALIACAO", "Em fase de valiação"),

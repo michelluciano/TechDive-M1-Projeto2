@@ -11,13 +11,13 @@ public class Trilha {
     private String nome;
     private String apelido;
     private List<Modulo> modulos;
-    private String satisfacao;
+    private int satisfacao;
     private String anotacoes;
     public static int serialTrilha =0;
     public static int serialOcupacao =0; // utilizado para criar o nome da trilha
 
-
-    public Trilha(int idTrilha, Empresa nomneEmpresa, String ocupacao, String nome, String apelido, String satisfacao, String anotacoes) {
+    // construtor trilha com satisfação
+    public Trilha(int idTrilha, Empresa nomneEmpresa, String ocupacao, String nome, String apelido, int satisfacao, String anotacoes) {
         this.idTrilha = idTrilha;
         this.nomeEmpresa = nomneEmpresa;
         this.ocupacao = ocupacao;
@@ -25,6 +25,15 @@ public class Trilha {
         this.apelido = apelido;
         this.satisfacao = satisfacao;
         this.anotacoes = anotacoes;
+    }
+
+    // construtor trilha nova
+    public Trilha(int idTrilha, Empresa nomeEmpresa, String ocupacao, String nome, String apelido) {
+        this.idTrilha = idTrilha;
+        this.nomeEmpresa = nomeEmpresa;
+        this.ocupacao = ocupacao;
+        this.nome = nome;
+        this.apelido = apelido;
     }
 
     public int getIdTrilha() {
@@ -75,11 +84,11 @@ public class Trilha {
         this.modulos = modulos;
     }
 
-    public String getSatisfacao() {
+    public int getSatisfacao() {
         return satisfacao;
     }
 
-    public void setSatisfacao(String satisfacao) {
+    public void setSatisfacao(int satisfacao) {
         this.satisfacao = satisfacao;
     }
 
