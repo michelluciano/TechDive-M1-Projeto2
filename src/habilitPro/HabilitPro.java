@@ -65,7 +65,7 @@ public class HabilitPro {
         empresas.add(emp2);
         //POPULAR ARRAY Trabalhador
         Trabalhador.serialTrabalhador++;
-        Trabalhador trab1 = new Trabalhador(Trabalhador.serialTrabalhador, "Jair Silva","12346578910","Aux Escritório");
+        Trabalhador trab1 = new Trabalhador(Trabalhador.serialTrabalhador, emp2,"Jair Silva","12346578910","Aux Escritório");
         trabalhadores.add(trab1);
         //POPULAR ARRAY Trilha
         Trilha.serialTrilha++;
@@ -982,7 +982,7 @@ public class HabilitPro {
             else if(empresas.get(i).getNomeEmpresa().contains(pesquisaEmpresa)){
                 return empresas.get(i);
             }
-            // pesquisar por nome
+            // pesquisar por CNPJ
             else if(empresas.get(i).getCNPJEmpresa().contains(pesquisaEmpresa)){
                 return empresas.get(i);
             }
@@ -1223,7 +1223,7 @@ public class HabilitPro {
     }
 
     private int menuGerenciarTrabalhador() {
-        Trabalhador temp;
+        Trabalhador temp = null;
         String pesquisaTrabalhador;
         while (true) {
             System.out.println("\n:: G E R E N C I A R   R E G I O N A I S ::\n");
@@ -1233,13 +1233,33 @@ public class HabilitPro {
             System.out.println("3 - Pesquisar Trabalhador");
             System.out.println("4 - Excluir Trabalhador");
             System.out.println("5 - Atualizar Trabalhador");
-            System.out.println("6 - Voltar Menu Anterior");
+            System.out.println("6 - Histórico Cursos do trabalhador");
+            System.out.println("7 - Voltar Menu Anterior");
             System.out.print("Sua opção: ");
             int opcao = Integer.parseInt(entrada.nextLine());
             limpatela.limparTela();
 
             switch (opcao) {
                 case 1:
+                    // para cadastrar um novo trabalhador precisa de uma EMPRESA
+                    Empresa empresa = null; // empresa
+                    while (empresa == null) {
+                        System.out.print("Informe o ID ou nome da EMPRESA: ");
+                        String pesquisaEmpresa = entrada.nextLine();
+                        // chamamos o método que pesquisa o autor
+                        empresa = pesquisarEmpresa(pesquisaEmpresa);
+                        if (empresa == null) { // empresa não encotrada
+                            System.out.print("\nEmpresa não encontrada.\n\nDigite 1 para pesquisar novamente ou 2 para voltar ao menu anterior: ");
+                            int opcaoTemp = Integer.parseInt(entrada.nextLine());
+                            if (opcaoTemp == 2) {
+                                return 1; // volta para o menu anterior
+                            }
+                        }
+                    }
+                    System.out.println("Empresa selecionada: " + empresa.getNomeEmpresa() + " - " + ValidaCNPJ.imprimeCNPJ(empresa.getCNPJEmpresa()));
+                    // fim para encontrar estado
+
+
                     System.out.print("\nNome: ");
                     String nomeTrabalhador = entrada.nextLine();
                     System.out.print("\nCPF: ");
@@ -1255,8 +1275,14 @@ public class HabilitPro {
                     String funcaoTrabalhador = entrada.nextLine();
 
                     Trabalhador.serialTrabalhador++;
-                    Trabalhador trab = new Trabalhador(Trabalhador.serialTrabalhador, nomeTrabalhador,CPFTrabalhador,funcaoTrabalhador);
+                    Trabalhador trab = new Trabalhador(Trabalhador.serialTrabalhador, empresa, nomeTrabalhador,CPFTrabalhador,funcaoTrabalhador);
                     trabalhadores.add(trab);
+                    //add historico
+                    TrabHist.serialhist++;
+                    TrabHist historico = new TrabHist(TrabHist.serialhist,trab,empresa,null,funcaoTrabalhador);
+                    trab.getHistoricoTrab().add(historico);
+
+
                     System.out.println("\nO Trabalhador foi cadastrado com sucesso");
                     break;
 
@@ -1269,13 +1295,14 @@ public class HabilitPro {
                             System.out.println("\nId:   \t" + temp.getIdTrabalhador());
                             System.out.println("Nome:   \t" + temp.getNome());
                             System.out.println("CPF:    \t" + temp.getCPF());
+                            System.out.println("Empresa:\t" + temp.getEmpresa().getNomeEmpresa());
                             System.out.println("Função: \t" + temp.getFuncao());
                         }
                     }
                     break;
 
                 case 3: //pesquisar
-                    System.out.print("\nInforme O ID ou descrição da Regional: ");
+                    System.out.print("\nInforme O ID ou descrição do trabalhador: ");
                     pesquisaTrabalhador = entrada.nextLine();
                     // método que pesquisa o Estado
                     temp = pesquisarTrabalhador(pesquisaTrabalhador);
@@ -1286,6 +1313,7 @@ public class HabilitPro {
                         System.out.println("\nId:   \t" + temp.getIdTrabalhador());
                         System.out.println("Nome:   \t" + temp.getNome());
                         System.out.println("CPF:    \t" + temp.getCPF());
+                        System.out.println("Empresa:\t" + temp.getEmpresa());
                         System.out.println("Função: \t" + temp.getFuncao());
                     }
 
@@ -1305,36 +1333,149 @@ public class HabilitPro {
                     break;
 
                 case 5: // Atualizar
-                    System.out.print("\nInforme o ID , nome ou CPF do trabalhador a ser excluído: ");
+                    System.out.println("Digite a opção desejada:");
+                    System.out.println("1 - Atualizar os dados do trabalhador");
+                    System.out.println("2 - associar uma trilha ao trabalhador");
+                    String opAtu = entrada.nextLine();
+                    System.out.print("\nInforme o ID , nome ou CPF do trabalhador a ser atualizado: ");
                     pesquisaTrabalhador = entrada.nextLine();
                     temp = pesquisarTrabalhador(pesquisaTrabalhador);
                     if (temp == null) { // não encontrado
                         System.out.println("\nTrabalhador não encontrado.");
                     } else {
-                        // mostra o estado encontrado
-                        System.out.println("\nDados atuais desta Regional:");
-                        System.out.println("\nId:   \t" + temp.getIdTrabalhador());
-                        System.out.println("Nome:   \t" + temp.getNome());
-                        System.out.println("CPF:    \t" + temp.getCPF());
-                        System.out.println("Função: \t" + temp.getFuncao());
+                        System.out.println("\nTrabalhador Nome."+temp.getNome());
+                        if (opAtu.equals("1")) {
 
-                        System.out.println("\nInforme os novos dados:");
-                        System.out.print("\nNome: ");
-                        String novonomeTrabalhador = entrada.nextLine();
-                        System.out.print("\nCPF: ");
-                        String novoCPFTrabalhador = entrada.nextLine();
-                        System.out.print("\nFunção: ");
-                        String novofuncaoTrabalhador = entrada.nextLine();
-                        // atualizar os dados no ArrayList
-                        temp.setNome(novonomeTrabalhador);
-                        temp.setCPF(novoCPFTrabalhador);
-                        temp.setFuncao(novofuncaoTrabalhador);
-                        System.out.println("\nTrabalhador foi atualizada com sucesso!");
+                            // mostra o estado encontrado
+                            System.out.println("\nDados atuais desta Regional:");
+                            System.out.println("\nId:   \t" + temp.getIdTrabalhador());
+                            System.out.println("Nome:   \t" + temp.getNome());
+                            System.out.println("CPF:    \t" + temp.getCPF());
+                            System.out.println("Empresa:\t" + temp.getEmpresa());
+                            System.out.println("Função: \t" + temp.getFuncao());
+
+                            System.out.println("\nInforme os novos dados:");
+                            System.out.print("\nNome: ");
+                            String novonomeTrabalhador = entrada.nextLine();
+                            System.out.print("\nCPF: ");
+                            String novoCPFTrabalhador = entrada.nextLine();
+                            //TODO:[RN04-05]
+                            System.out.print("\nFunção: ");
+                            String novofuncaoTrabalhador = entrada.nextLine();
+                            //TODO: [RN04-04] = ok
+                            empresa = null; // empresa
+                            while (empresa == null) {
+                                System.out.print("Informe o ID ou nome da EMPRESA: ");
+                                String pesquisaEmpresa = entrada.nextLine();
+                                // chamamos o método que pesquisa o autor
+                                empresa = pesquisarEmpresa(pesquisaEmpresa);
+                                if (empresa == null) { // empresa não encotrada
+                                    System.out.print("\nEmpresa não encontrada.\n\nDigite 1 para pesquisar novamente ou 2 para voltar ao menu anterior: ");
+                                    int opcaoTemp = Integer.parseInt(entrada.nextLine());
+                                    if (opcaoTemp == 2) {
+                                        return 1; // volta para o menu anterior
+                                    }
+                                }
+                            }
+                            System.out.println("Empresa selecionada: " + empresa.getNomeEmpresa() + " - " + ValidaCNPJ.imprimeCNPJ(empresa.getCNPJEmpresa()));
+                            // atualizar os dados no ArrayList
+                            temp.setNome(novonomeTrabalhador);
+                            temp.setCPF(novoCPFTrabalhador);
+                            temp.setFuncao(novofuncaoTrabalhador);
+                            temp.setEmpresa(empresa);
+
+                            //add historico
+                            TrabHist.serialhist++;
+                            historico = new TrabHist(TrabHist.serialhist,temp,empresa,null,temp.getFuncao());
+                            temp.getHistoricoTrab().add(historico);
+                            System.out.println("\nTrabalhador foi atualizada com sucesso!");
+                        }
+
+                        if (opAtu.equals("2")) {
+                            System.out.println("\nTrabalhador Nome."+temp.getNome());
+                            System.out.println("Vamos adicionar uma Trilha");
+
+                            Trilha trilhaList = null; // USUARIO
+                            if (trilhas.isEmpty()) {
+                                System.out.println("\nNão há nenhuma Trilha cadastrada.");
+                            } else {
+                                for (int i = 0; i < trilhas.size(); i++) {
+                                    trilhaList = trilhas.get(i); //
+                                    System.out.println(trilhaList.getIdTrilha() + " - Trilha: " + trilhaList.getNome());
+                                }
+                            }
+                            System.out.print("Informe o numero da Trilha: ");
+                            int trilhaNova = entrada.nextInt();
+                            entrada.nextLine();
+
+                            System.out.println("Trilha selecionada: " + trilhaNova);
+                            trilhaNova--;
+                            // fim para encontrar estado
+                            //TODO: [[RN04-02]  = OK
+                            Trilha triT = new Trilha(trilhas.get(trilhaNova).getIdTrilha(),trilhas.get(trilhaNova).getEmpresa(),trilhas.get(trilhaNova).getOcupacao(),trilhas.get(trilhaNova).getNome(),trilhas.get(trilhaNova).getApelido());
+                            temp.getTrilhasTrab().add(triT);
+                            System.out.println("Trilha dicionada ao trabalhador com sucesso!");
+                            //add historico
+                            TrabHist.serialhist++;
+                            historico = new TrabHist(TrabHist.serialhist,temp,temp.getEmpresa(),trilhaList,temp.getFuncao());
+                            temp.getHistoricoTrab().add(historico);
+                            // adicionar o modulo
+                            System.out.println("Vamos adicionar um Módulo");
+
+                            if (modulos.size() <1) {
+                                System.out.println("\nNão há nenhuma módulo cadastrada.");
+                            } else {
+                                for (int i = 0; i < modulos.size(); i++) {
+                                    if(modulos.get(i).getTrilha().getIdTrilha() == trilhaNova  ){
+                                        System.out.println(modulos.get(i).getIdModulo() + " - Módulo: " + modulos.get(i).getNome());
+                                    }; //
+
+                                }
+                            }
+                            System.out.print("Informe o numero do Módulo: ");
+                            int modNova = entrada.nextInt();
+                            entrada.nextLine();
+                            modNova--;
+
+                            System.out.println("Módulo selecionado: " + modNova);
+                            // fim para encontrar mod
+                            //TODO: [RN04-03] = OK
+                            Modulo modT = new Modulo(modulos.get(modNova).getIdModulo(),modulos.get(modNova).getTrilha(),modulos.get(modNova).getNome(),modulos.get(modNova).getHabilidades(),modulos.get(modNova).getTarefaValidacao(),modulos.get(modNova).getPrazoLimite(),modulos.get(modNova).getStatus());
+                            temp.getModulosTrab().add(modT);
+
+                            System.out.println("\nMódulo adicionado ao trabalhador com sucesso!");
+                        }
                     }
 
                     break;
+                case 6:// histórico // TODO: [RN04-04]
+                    System.out.print("\nInforme O ID ou Nome do trabalhador: ");
+                    pesquisaTrabalhador = entrada.nextLine();
+                    // método que pesquisa o Estado
+                    temp = pesquisarTrabalhador(pesquisaTrabalhador);
+                    if (temp == null) {
+                        System.out.println("\nA trabalhador náo foi encontrada.");
+                    } else {
+                        System.out.println("");
+                        System.out.println("    H I S T Ó R I C O   T R A B A L H A D O R   ");
+                        System.out.println("------------------------------------------------");
+                        System.out.println("Trabalhador: " + temp.getNome());
+                        System.out.println("------------------------------------------------");
+                        System.out.println("Empresa        Trilha          Função         ID");
+                        System.out.println("------------------------------------------------");
 
-                case 6:
+                        for(int i = 0; i < temp.getHistoricoTrab().size(); i++){
+                            TrabHist t = temp.getHistoricoTrab().get(i); // representa a transação da iteração atual
+
+                            System.out.println(String.format(t.getHistEmpresa().getNomeEmpresa()) + "  " + String.format("%-50s", t.getHistTrilha().getNome()) +
+                                    String.format("%1$5s", t.getHitFuncao()) +
+                                    String.format("%1s", t.getIdHist()));
+                        }
+                        System.out.println("------------------------------------------------");
+
+                    }
+                    break;
+                case 7:
                     return 0; // volta para o menu principal
             }
         }

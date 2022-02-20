@@ -1,5 +1,6 @@
 package habilitPro;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,23 +10,29 @@ public class Trabalhador {
     private int idTrabalhador;
     private String nome;
     private String CPF;
-    private ArrayList<Empresa> empresa = new ArrayList<>();// empresas deste trabalhador
+    private Empresa empresa;
     private String funcao;
-    private Date dataFuncao;
-    private List<Trilha> trilhas = new ArrayList<>();
-    private List<Modulo> modulos = new ArrayList<>();
+    private OffsetDateTime dataFuncao;
+    private ArrayList<Trilha> trilhasTrab = new ArrayList<>();
+    private ArrayList<Modulo> modulosTrab = new ArrayList<>();
+    private ArrayList<TrabHist> historicoTrab = new ArrayList<>();
     public static int serialTrabalhador = 0;
 
     public Trabalhador() {
     }
 
-    public Trabalhador(int idTrabalhador, String nome, String CPF, String funcao) {
+    public Trabalhador(int idTrabalhador,Empresa empresa, String nome, String CPF, String funcao) {
         this.idTrabalhador = idTrabalhador;
+        this.empresa = empresa;
         this.nome = nome;
         this.CPF = CPF;
         this.funcao = funcao;
 
     }
+
+    public Empresa getEmpresa() {    return empresa;  }
+
+    public void setEmpresa(Empresa empresa) { this.empresa = empresa; }
 
     public int getIdTrabalhador() {
         return idTrabalhador;
@@ -51,14 +58,6 @@ public class Trabalhador {
         this.CPF = CPF;
     }
 
-    public ArrayList<Empresa> getEmpresa() {
-        return empresa;
-    }
-
-    public void setEmpresa(ArrayList<Empresa> empresa) {
-        this.empresa = empresa;
-    }
-
     public String getFuncao() {
         return funcao;
     }
@@ -67,27 +66,35 @@ public class Trabalhador {
         this.funcao = funcao;
     }
 
-    public Date getDataFuncao() {
+    public OffsetDateTime getDataFuncao() {
         return dataFuncao;
     }
 
-    public void setDataFuncao(Date dataFuncao) {
+    public void setDataFuncao(OffsetDateTime dataFuncao) {
         this.dataFuncao = dataFuncao;
     }
 
-    public List<Trilha> getTrilhas() {
-        return trilhas;
+    public ArrayList<Trilha> getTrilhasTrab() {
+        return trilhasTrab;
     }
 
-    public void setTrilhas(List<Trilha> trilhas) {
-        this.trilhas = trilhas;
+    public void setTrilhasTrab(ArrayList<Trilha> trilhasTrab) {
+        this.trilhasTrab = trilhasTrab;
     }
 
-    public List<Modulo> getModulos() {
-        return modulos;
+    public ArrayList<Modulo> getModulosTrab() {
+        return modulosTrab;
     }
 
-    public void setModulos(List<Modulo> modulos) {
-        this.modulos = modulos;
+    public void setModulosTrab(ArrayList<Modulo> modulosTrab) {
+        this.modulosTrab = modulosTrab;
+    }
+
+    public ArrayList<TrabHist> getHistoricoTrab() {
+        return historicoTrab;
+    }
+
+    public void setHistoricoTrab(ArrayList<TrabHist> historicoTrab) {
+        this.historicoTrab = historicoTrab;
     }
 }
