@@ -10,35 +10,44 @@ public class Usuario {
     private String CPF;
     private String email;
     private String senha;
-    //private ArrayList<Perfil> perfilUsu = new ArrayList<>();
-    private Perfil perfil;
+    private ArrayList<Perfil> perfilUsu = new ArrayList<>();
+    //private Perfil perfil;
     public static int serialUsuario =0;
 
 
-    public Usuario(int idUsuario, String nome, String CPF, String email, String senha, Perfil perfil) {
+    public Usuario(int idUsuario, String nome, String CPF, String email, String senha) {
         this.idUsuario = idUsuario;
         this.nome = nome;
         this.CPF = CPF;
         this.email = email;
         this.senha = senha;
-        this.perfil = perfil;
+
     }
 
-    public ArrayList<Perfil> getPerfis(ArrayList<Perfil> perfis){
-        ArrayList<Perfil> perfisTemp = new ArrayList<>();
-
-        for (int i = 0; i< perfis.size(); i++){
-            Perfil perfil = perfis.get(i);
-            if (perfil.getUsuario().equals(this)){
-                perfisTemp.add(perfil);
-            }
-        }
-        return perfisTemp;
-    } // fim array
+//    public ArrayList<Perfil> getPerfis(ArrayList<Perfil> perfis){
+//        ArrayList<Perfil> perfisTemp = new ArrayList<>();
+//
+//        for (int i = 0; i< perfis.size(); i++){
+//            Perfil perfil = perfis.get(i);
+//            if (perfil.getUsuario().equals(this)){
+//                perfisTemp.add(perfil);
+//            }
+//        }
+//        return perfisTemp;
+//    } // fim array
 
 //    public void setPerfil(ArrayList<Perfil> perfil) {
 //        this.perfil = perfil;
 //    }
+
+
+    public ArrayList<Perfil> getPerfilUsu() {
+        return perfilUsu;
+    }
+
+    public void setPerfilUsu(ArrayList<Perfil> perfilUsu) {
+        this.perfilUsu = perfilUsu;
+    }
 
     public int getIdUsuario() {
         return idUsuario;
@@ -80,13 +89,7 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public Perfil getPerfil() {
-        return perfil;
-    }
 
-    public void setPerfil(Perfil perfil) {
-        this.perfil = perfil;
-    }
 
     @Override
     public String toString() {
@@ -96,7 +99,7 @@ public class Usuario {
                 ", CPF='" + CPF + '\'' +
                 ", email='" + email + '\'' +
                 ", senha='" + senha + '\'' +
-                ", perfil=" + perfil +
+
                 '}';
     }
 }

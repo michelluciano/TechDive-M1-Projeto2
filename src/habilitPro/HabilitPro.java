@@ -87,13 +87,13 @@ public class HabilitPro {
         perfis.add(per3);
         //POPULAR ARRAY Usuário
         Usuario.serialUsuario++;
-        Usuario usu1 = new Usuario(Usuario.serialUsuario, "Usuario Admin","10987654321","admin@admin.com","Admin@123",per1);
+        Usuario usu1 = new Usuario(Usuario.serialUsuario, "Usuario Admin","10987654321","admin@admin.com","Admin@123");
         usuarios.add(usu1);
         Usuario.serialUsuario++;
-        Usuario usu2 = new Usuario(Usuario.serialUsuario, "Usuario Oper","10987654321","admin@admin.com","Admin@123",per2);
+        Usuario usu2 = new Usuario(Usuario.serialUsuario, "Usuario Oper","10987654321","admin@admin.com","Admin@123");
         usuarios.add(usu2);
         Usuario.serialUsuario++;
-        Usuario usu3 = new Usuario(Usuario.serialUsuario, "Usuario RH","10987654321","admin@admin.com","Admin@123",per3);
+        Usuario usu3 = new Usuario(Usuario.serialUsuario, "Usuario RH","10987654321","admin@admin.com","Admin@123");
         usuarios.add(usu3);
 
         HabilitPro mainTestes = new HabilitPro();
@@ -475,6 +475,7 @@ public class HabilitPro {
     }
 
     private int menuGerenciarRegional() {
+        //TODO: [RN01-05] = cadastra cada regional
         RegionalSenai temp;
         String pesquisaRegional;
         while (true) {
@@ -699,15 +700,16 @@ public class HabilitPro {
     private int menuGerenciarEmpresa() {
         Empresa temp; // serve para várias operações neste menu
         String pesquisaEmpresa;
-        String tipoEMpresa= "";
-        String nomeFilial="";
+        String tipoEmpresa;
+        String nomeFilial = "Não tem filial";
         while (true) { // mostra o menu de forma repetitiva até o usuário usar a opção de sair
             System.out.println("\n:: G E R E N C I A R   E M P R E S A ::\n");
             System.out.println("Escolha a opção desejada");
             System.out.println("1 - Nova Empresa");
             System.out.println("2 - Listar Empresas");
             System.out.println("3 - Pesquisar Empresa");
-            System.out.println("4 - Excluir Empresa");
+            //System.out.println("4 - Excluir Empresa");
+            System.out.println("5 - Associar Trilha a Empresa");
             System.out.println("6 - Voltar Menu Anterior");
             System.out.print("Sua opção: ");
             int opcao = Integer.parseInt(entrada.nextLine()); // lê a opção do usuário
@@ -718,12 +720,21 @@ public class HabilitPro {
                     String nomeEmpresa = entrada.nextLine();
                     System.out.print("\nCNPJ da Empresa: ");
                     String CNPJEmpresa = entrada.nextLine();
+                    //TODO: [RN01-01] = ok CNPJ teste 14572457000185
+                    while(ValidaCNPJ.isCNPJ(CNPJEmpresa) == false){
+                        System.out.println("\nO CNPJ digitado é inválido!!");
+                        System.out.print("\nDigite um CNPJ válido: ");
+                        CNPJEmpresa = entrada.nextLine();
+                    }
+                    System.out.printf("\nCNPJ digitado: "+ ValidaCNPJ.imprimeCNPJ(CNPJEmpresa));
+                    //TODO: [RN01-03] = OK
                     System.out.print("\nTipo da Empresa:\n 1 - Matriz \n 2 - Filial ");
                     int optipoEmpresa = entrada.nextInt();
+                    entrada.nextLine();
                     if (optipoEmpresa == 1){
-                        tipoEMpresa = EnumTotal.MATRIZ.getDisplayName();
+                        tipoEmpresa = EnumTotal.MATRIZ.getDisplayName();
                     }else{
-                        tipoEMpresa = EnumTotal.FILIAL.getDisplayName();
+                        tipoEmpresa = EnumTotal.FILIAL.getDisplayName();
                         System.out.print("\nNome da Filial da Empresa: ");
                         nomeFilial = entrada.nextLine();
                     }
@@ -731,6 +742,7 @@ public class HabilitPro {
                     // para cadastrar uma nova EMPRESA precisa de uma cidade
                     Cidade cidade = null; // CIDADE
                     while (cidade == null) {
+                        System.out.println("Para cadastrar uma nova EMPRESA precisa de uma cidade");
                         System.out.print("Informe o id ou nome da Cidade: ");
                         String pesquisaCidade = entrada.nextLine();
                         // chamamos o método que pesquisa o autor
@@ -746,6 +758,7 @@ public class HabilitPro {
                     System.out.println("Cidade selecionada: " + cidade.getDescCidade() + " - " + cidade.getEstado().getUfEstado());
 
                     // fim para encontrar SEGMENTO
+                    // TODO: [RN01-02] = pesquisa o segmento previamente cadastrado
                     SegmentoEmpresa segmento = null; // SEGmento
                     while (segmento == null) {
                         System.out.print("Informe o id ou nome o Segmento: ");
@@ -764,7 +777,7 @@ public class HabilitPro {
                     System.out.println("Segmento selecionada: " + segmento.getDescricaoSegmento());
                     // fim para encontrar estado
                     // contador de cidade
-
+                    // TODO: [RN01-05] = pesquisa a regional previamente cadastrado
                     RegionalSenai regional = null; // REGIONAL
                     while (regional == null) {
                         System.out.print("Informe o id ou nome da Regional: ");
@@ -785,35 +798,39 @@ public class HabilitPro {
                     // fim para encontrar estado
 
 
-                    Trilha trilha = null; // REGIONAL
+                    Trilha trilha = null; // TRILHA
                     while (trilha == null) {
                         System.out.print("Informe o id ou nome da Trilha: ");
                         String pesquisaTrilha = entrada.nextLine();
                         // chamamos o método que pesquisa o autor
                         trilha = pesquisarTrilha(pesquisaTrilha);
                         if (trilha == null) { // Estado não encotrado
-                            System.out.print("\nRegional não encontrado.\n\nDigite 1 para pesquisar novamente \n2 para voltar ao menu anterior\n 3 Cadastrar trilha: ");
+                            System.out.print("\nRegional não encontrado.\n\nDigite 1 para pesquisar novamente\n2 para voltar ao menu anterior");
                             int opcaoTemp = Integer.parseInt(entrada.nextLine());
                             if (opcaoTemp == 2) {
                                 return 1; // volta para o menu anterior
                             }
                         }
                     }
-                    System.out.println("Cidade selecionada: " + cidade.getDescCidade() + " - " + cidade.getEstado().getUfEstado());
-                    System.out.println("Segmento selecionada: " + segmento.getDescricaoSegmento());
-                    System.out.println("Regional selecionada: " + regional.getDescRegionalSenai());
+                    System.out.println("\n");
+                    System.out.println("\n");
+                    System.out.println("\n");
+                    System.out.println("Cidade selecionada:    \t" + cidade.getDescCidade() + " - " + cidade.getEstado().getUfEstado());
+                    System.out.println("Segmento selecionada:  \t" + segmento.getDescricaoSegmento());
+                    System.out.println("Regional selecionada:  \t" + regional.getDescRegionalSenai());
+                    System.out.println("Trilha Selecionada:    \t" + trilha.getNome());
                     Empresa.serialEmpresa++;
                     Empresa emp;
-                    if(tipoEMpresa.equals(EnumTotal.MATRIZ.getDisplayName())){
-                        emp = new Empresa(Empresa.serialEmpresa, nomeEmpresa,CNPJEmpresa,nomeEmpresa,segmento,cidade,regional);
+                    if(tipoEmpresa.equals(EnumTotal.MATRIZ.getDisplayName())){
+                        emp = new Empresa(Empresa.serialEmpresa, nomeEmpresa,CNPJEmpresa,EnumTotal.MATRIZ.getDisplayName(),segmento,cidade,regional);
                     }else {
-                        emp = new Empresa(Empresa.serialEmpresa,nomeEmpresa,CNPJEmpresa,tipoEMpresa,nomeFilial,segmento,cidade,regional);
+                        emp = new Empresa(Empresa.serialEmpresa,nomeEmpresa,CNPJEmpresa,EnumTotal.FILIAL.getDisplayName(),nomeFilial,segmento,cidade,regional);
                     }
 
                     // e o adiciona no ArrayList de cidades
                     empresas.add(emp);
 
-                    System.out.println("\nA Cidade cadastrada com sucesso");
+                    System.out.println("\nA Empresa cadastrada com sucesso");
 
                     break;
                 case 2:// lista
@@ -835,7 +852,11 @@ public class HabilitPro {
                             System.out.println("Cidade:           \t" + (temp.getCidadeEmpresa().getDescCidade()));
                             System.out.println("Estado:           \t" + (temp.getCidadeEmpresa().getEstado().getUfEstado()));
                             System.out.println("Regional SENAI:   \t" + (temp.getRegionalSenai().getDescRegionalSenai()));
-                            System.out.println("Trilha            \t" + temp.getTrilha());
+                            System.out.println("Trilha            \t") ;
+                                for( int j =0; j< temp.getTrilhaEmp().size(); j++){
+                                  System.out.print(temp.getTrilhaEmp().get(j).getNome()+" | ");
+                                };
+                            System.out.println("\n------------------------------------------");
                         }
                     }
                     break;
@@ -860,7 +881,11 @@ public class HabilitPro {
                         System.out.println("Cidade:           \t" + (temp.getCidadeEmpresa().getDescCidade()));
                         System.out.println("Estado:           \t" + (temp.getCidadeEmpresa().getEstado().getUfEstado()));
                         System.out.println("Regional SENAI:   \t" + (temp.getRegionalSenai().getDescRegionalSenai()));
-                        System.out.println("Trilha            \t" + temp.getTrilha());
+                        System.out.println("Trilha            \t");
+                        for( int j =0; j< temp.getTrilhaEmp().size(); j++){
+                            System.out.print(temp.getTrilhaEmp().get(j).getNome()+" | ");
+                        };
+                        System.out.println("\n------------------------------------------");
                     }
 
                     break;
@@ -874,15 +899,68 @@ public class HabilitPro {
                     if(temp == null){ // empréstimo não encontrado
                         System.out.println("\nO empréstimo náo foi encontrado.");
                     }else {
-                        // vamos excluir este Estado. Atenção: Se houver Cidades relacionadas
+                        // vamos excluir este Empresa. Atenção: Se houver Cidades relacionadas
                         // a este Estado, então a exclusão destes deverá ser feita primeiro
-                        if(temp.getTrilha() != null){
+                        if(temp.getTrilhaEmp() != null){
                             System.out.println("\nOps! Esta empresa está relacionado a uumma ou mais trilhas. Exclua eles primeiro.");
                         }
                         else{
                             estados.remove(temp);
                             System.out.println("\nEstado foi excluído com sucesso.");
                         }
+                    }
+                    break;
+                case 5:
+                    System.out.print("\nInforme a ID ou descricao da Empresa a ser associada: ");
+                    pesquisaEmpresa = entrada.nextLine();
+                    // chamamos o método que pesquisa o Usuario
+                    temp = pesquisarEmpresa(pesquisaEmpresa);
+                    if(temp == null){ // não encotrado
+                        System.out.println("\nA empresa "+pesquisaEmpresa+" não foi encontrada.");
+                    }
+                    else {
+                        // mostra a encontrado
+                        System.out.println("\nDados atuais desta Empresa:");
+                        System.out.println("\nId:             \t" + temp.getIdEmpresa());
+                        System.out.println("Nome da Empresa:  \t" + temp.getNomeEmpresa());
+                        System.out.println("CNPJ:             \t" + temp.getCNPJEmpresa());
+                        if (temp.getTipoEmpresa().equals(EnumTotal.MATRIZ)) {
+                            System.out.println("Tipo :            \t" + temp.getTipoEmpresa());
+                        } else {
+                            System.out.println("Tipo :            \t" + temp.getTipoEmpresa());
+                            System.out.println("Nome Filial       \t" + temp.getNomeFilial());
+                        }
+                        System.out.println("Segmento Empresa: \t" + (temp.getSegmentoEmpresa().getDescricaoSegmento()));
+                        System.out.println("Cidade:           \t" + (temp.getCidadeEmpresa().getDescCidade()));
+                        System.out.println("Estado:           \t" + (temp.getCidadeEmpresa().getEstado().getUfEstado()));
+                        System.out.println("Regional SENAI:   \t" + (temp.getRegionalSenai().getDescRegionalSenai()));
+                        System.out.println("Trilha            \t" + temp.getTrilhaEmp());
+                        //System.out.println("Qt Perfil:    \t" + temp.getPerfilUsu().size());
+                        System.out.println("==========================================================");
+
+                        System.out.println("Vamos adicionar uma Trilha a empresa "+temp.getNomeEmpresa());
+
+                        Trilha trilhaList = null; // trilha
+                        if (trilhas.isEmpty()) {
+                            System.out.println("\nNão há nenhuma trilha cadastrado.");
+                        } else {
+                            for (int i = 0; i < trilhas.size(); i++) {
+                                trilhaList = trilhas.get(i); //
+                                System.out.println(trilhaList.getIdTrilha() + " - Trilha: " + trilhaList.getNome());
+                            }
+                        }
+                        System.out.print("Informe o numero da trilha: ");
+                        int trilhaNova = entrada.nextInt();
+                        entrada.nextLine();
+                        trilhaNova--;
+                        System.out.println("Trilha selecionado: " + trilhas.get(trilhaNova));
+                        // fim para encontrar estado
+                        //TODO: [RN05-04] = OK
+                        Trilha tril = new Trilha(trilhas.get(trilhaNova).getIdTrilha(),trilhas.get(trilhaNova).getEmpresa(),
+                                trilhas.get(trilhaNova).getOcupacao(),trilhas.get(trilhaNova).getNome(),trilhas.get(trilhaNova).getApelido());
+                        temp.getTrilhaEmp().add(tril);
+
+                        System.out.println("\nTrilha "+tril.getNome()+" Associada A empres "+ tril.getEmpresa().getNomeEmpresa()+" com sucesso!");
                     }
                     break;
                 case 6:
@@ -1068,19 +1146,19 @@ public class HabilitPro {
                         System.out.print("Digite o Grau de Satisfação:\n1 - 2 - 3 - 4 - 5");
                         novasatisfacao = entrada.nextLine();
                         //TODO: [RN02-05] = OK
-                        if(usuarioTrilha.getPerfil().getNomePerfil().equals("Operacional")){
+//                        if(usuarioTrilha.getPerfilUsu()).equals("Operacional")){
                             //TODO [RN02-04] = OK
-                            while(ValidaCampoInt.validaInt(novasatisfacao)  == false){
-                                System.out.println("\nO valor digitado é inválido!!");
-                                System.out.print("\nDigite um valor válido: ");
-                                novasatisfacao = entrada.nextLine();
-                            }
-
-                            System.out.println("Digite Anotações");
-                            novaanotacoesTrilha = entrada.nextLine();
-                            temp.setAnotacoes(novaanotacoesTrilha);
-                            temp.setSatisfacao(Integer.parseInt(novasatisfacao));
-                        }
+//                            while(ValidaCampoInt.validaInt(novasatisfacao)  == false){
+//                                System.out.println("\nO valor digitado é inválido!!");
+//                                System.out.print("\nDigite um valor válido: ");
+//                                novasatisfacao = entrada.nextLine();
+//                            }
+//
+//                            System.out.println("Digite Anotações");
+//                            novaanotacoesTrilha = entrada.nextLine();
+//                            temp.setAnotacoes(novaanotacoesTrilha);
+//                            temp.setSatisfacao(Integer.parseInt(novasatisfacao));
+//                        }
 
                         // atualiza
                         temp.setOcupacao(novaocupacao);
@@ -1463,7 +1541,7 @@ public class HabilitPro {
             System.out.println("2 - Listar Perfis");
             System.out.println("3 - Pesquisar Perfis");
             System.out.println("4 - Excluir Usuario");
-            System.out.println("5 - Atualizar Usuario");
+            System.out.println("5 - Adicionar Perfil ao Usuario");
             System.out.println("6 - Voltar Menu Anterior");
             System.out.print("Sua opção: ");
             int opcao = Integer.parseInt(entrada.nextLine());
@@ -1476,7 +1554,7 @@ public class HabilitPro {
 
                     System.out.print("\nCPF: ");
                     String cpfUsuario = entrada.nextLine();
-                    //TODO: EXEMPLO DE VALIDAÇÂO DE ENTRADA DE STRING, SE DER TEMPO COLOCO NOS OUTROS CAMPOS
+                    //TODO: [RN05-01] = OK
                     while(ValidarCPF.isCPF(cpfUsuario) == false){
                         System.out.println("\nO CPF digitado é inválido!!");
                         System.out.print("\nDigite um CPF válido: ");
@@ -1485,7 +1563,7 @@ public class HabilitPro {
                     System.out.printf("\nCPF digitado: "+ ValidarCPF.imprimeCPF(cpfUsuario));
                     System.out.print("\nE-mail: ");
                     String emailUsuario = entrada.nextLine();
-                    //TODO: EXEMPLO DE VALIDAÇÂO DE ENTRADA DE email, SE DER TEMPO COLOCO NOS OUTROS CAMPOS
+                    //TODO: [RN05-02] = OK
                     while(ValidaEmail.isEmail(emailUsuario) == false){
                         System.out.println("\nO EMAIL digitado é inválido!!");
                         System.out.print("\nDigite um EMAIL válido: ");
@@ -1493,21 +1571,37 @@ public class HabilitPro {
                     }
                     System.out.print("\nSenha: ");
                     String senhaUsuario = entrada.nextLine();
-                    //TODO: EXEMPLO DE VALIDAÇÂO DE ENTRADA DE senha, SE DER TEMPO COLOCO NOS OUTROS CAMPOS
+                    //TODO: [RN05-03] = ok
                     while(ValidaSenha.isSenha(senhaUsuario) == false){
                         System.out.println("\nA senha digitado é inválido!!");
                         System.out.print("\nDigite uma Senha: \n - com 8 caracteres ou mais\n - deve conter letras\n - deve conter numeros");
                         senhaUsuario = entrada.nextLine();
                     }
                     // para cadastrar um novo usuario precisa de um Perfil
+                    System.out.println("Para cadastrar um novo usuario precisa de um Perfil");
+//                    Perfil perfilList = null; // USUARIO
+//                    if(perfis.isEmpty()){
+//                        System.out.println("\nNão há nenhum Perfil cadastrado.");
+//                    }
+//                    else{
+//                        for(int i = 0; i < perfis.size(); i++){
+//                            perfilList = perfis.get(i); //
+//                            System.out.println("ID: "+perfilList.getIdPerfil()+" - Perfil: " + perfilList.getNomePerfil());
+//                        }
+//                    }
+//                    System.out.print("Informe o numero do Perfil: ");
+//                    int perfilEntrada = entrada.nextInt();
+//                    entrada.nextLine();
+
+                    String pesquisaPerfil = null;
                     Perfil perfil = null; // USUARIO
                     while (perfil == null) {
                         System.out.println("Lista de Perfil");
                         for(int i = 0; i < perfis.size(); i++){
                             System.out.println("Nome Perfil: "+perfis.get(i).getIdPerfil()+" - "+perfis.get(i).getNomePerfil());
                         }
-                        System.out.print("Informe o id ou nome do Perfil: ");
-                        String pesquisaPerfil = entrada.nextLine();
+                        System.out.print("Informe o numero do Perfil: ");
+                        pesquisaPerfil = entrada.nextLine();
                         // chamamos o método que pesquisa o autor
                         perfil = pesquisarPerfil(pesquisaPerfil);
                         if (perfil == null) { // perfil não encotrado
@@ -1519,11 +1613,16 @@ public class HabilitPro {
                         }
                     }
                     System.out.println("Perfil selecionado: " + perfil.getNomePerfil());
+                    int perfilEntrada =Integer.parseInt(pesquisaPerfil);
+                    perfilEntrada--;
                     // fim para encontrar estado
 
                     Usuario.serialUsuario++;
-                    Usuario usu = new Usuario(Usuario.serialUsuario, nomeUsuario,cpfUsuario,emailUsuario,senhaUsuario,perfil);
+                    Usuario usu = new Usuario(Usuario.serialUsuario, nomeUsuario,cpfUsuario,emailUsuario,senhaUsuario);
                     usuarios.add(usu);
+                    //TODO : [RN05-04] = ok
+                    Perfil per = new Perfil(perfis.get(perfilEntrada).getIdPerfil(),perfis.get(perfilEntrada).getNomePerfil(),perfis.get(perfilEntrada).getDescricaoPerfil());
+                    usu.getPerfilUsu().add(per);
 
                     System.out.println("\nO Usuario foi cadastrado com sucesso");
 
@@ -1540,7 +1639,12 @@ public class HabilitPro {
                             System.out.println("Nome:         \t" + temp.getNome());
                             System.out.println("CPF:          \t" + temp.getCPF());
                             System.out.println("E-mail:       \t" + temp.getEmail());
-                            System.out.println("Descrição:    \t" + temp.getPerfil().getNomePerfil());
+                            System.out.print("Descrição:  \t");
+                                                for( int j =0; j< temp.getPerfilUsu().size(); j++){
+                                                    System.out.print(temp.getPerfilUsu().get(j).getNomePerfil()+"|");
+                                                };
+
+                            System.out.println("\n------------------------------------------");
                         }
                     }
                     break;
@@ -1562,6 +1666,7 @@ public class HabilitPro {
                     }
 
                     break;
+
                 case 4:
                     System.out.print("\nInforme a ID ou Nome do Usuario a ser excluído: ");
                     pesquisaUsuario = entrada.nextLine();
@@ -1570,17 +1675,9 @@ public class HabilitPro {
                         System.out.println("\nO Usuario não foi encontrado.");
                     }
                     else{
-                        // vamos excluir este Usuario. Atenção: Se houver perfil relacionadas
-                        // a este Usuario, então a exclusão destes deverá ser feita primeiro
-                        if(temp.getPerfis(perfis).size() > 0){
-                            System.out.println("\nOps! Este Usuario está relacionado a " + temp.getPerfis(perfis).size() + ". Exclua eles primeiro.");
-                        }
-                        else{
-                            usuarios.remove(temp);
-                            System.out.println("\nUsuario foi excluído com sucesso.");
-                        }
+                           usuarios.remove(temp);
+                           System.out.println("\nUsuario foi excluído com sucesso.");
                     }
-
                     break;
 
                 case 5: //atualizar
@@ -1598,41 +1695,45 @@ public class HabilitPro {
                         System.out.println("Nome:         \t" + temp.getNome());
                         System.out.println("CPF:          \t" + temp.getCPF());
                         System.out.println("E-mail:       \t" + temp.getEmail());
-                        System.out.println("Qt Perfil:    \t" + temp.getPerfis(perfis).size());
+                        //System.out.println("Qt Perfil:    \t" + temp.getPerfilUsu().size());
                         System.out.println("==========================================================");
-                        System.out.println("\nInforme os novos dados:");
-                        System.out.print("Nome: ");
-                        String novoNomeUsuario= entrada.nextLine();
-                        System.out.print("\nCPF: ");
-                        String novocpfUsuario = entrada.nextLine();
-                        System.out.print("\nE-mail: ");
-                        String novoEmailUsuario = entrada.nextLine();
-                        System.out.print("\nSenha: ");
-                        String novaSenhaUsuario = entrada.nextLine();
+//                        System.out.println("\nInforme os novos dados:");
+//                        System.out.print("Nome: ");
+//                        String novoNomeUsuario= entrada.nextLine();
+//                        System.out.print("\nCPF: ");
+//                        String novocpfUsuario = entrada.nextLine();
+//                        System.out.print("\nE-mail: ");
+//                        String novoEmailUsuario = entrada.nextLine();
+//                        System.out.print("\nSenha: ");
+//                        String novaSenhaUsuario = entrada.nextLine();
 
-                        // para cadastrar um novo usuario precisa de um Perfil
-                        Perfil perfilA = null; // USUARIO
-                        while (perfilA == null) {
-                            System.out.print("Informe o id ou nome do Perfil: ");
-                            String pesquisaPerfil = entrada.nextLine();
-                            // chamamos o método que pesquisa o autor
-                            perfilA = pesquisarPerfil(pesquisaPerfil);
-                            if (perfilA == null) { // perfil não encotrado
-                                System.out.print("\nPerfil não encontrado.\n\nDigite 1 para pesquisar novamente ou 2 para voltar ao menu anterior: ");
-                                int opcaoTemp = Integer.parseInt(entrada.nextLine());
-                                if (opcaoTemp == 2) {
-                                    return 1; // volta para o menu anterior
-                                }
+                        System.out.println("Vamos adicionar um Perfil");
+
+                        Perfil perfilList = null; // USUARIO
+                        if(perfis.isEmpty()){
+                            System.out.println("\nNão há nenhum Perfil cadastrado.");
+                        }
+                        else{
+                            for(int i = 0; i < perfis.size(); i++){
+                                perfilList = perfis.get(i); //
+                                System.out.println(i+" - Perfil: " + perfilList.getNomePerfil());
                             }
                         }
-                        System.out.println("Perfil selecionado: " + perfilA.getNomePerfil());
+                        System.out.print("Informe o numero do Perfil: ");
+                        int perfilNovo = entrada.nextInt();
+                        entrada.nextLine();
+
+
+                        System.out.println("Perfil selecionado: " + perfilNovo);
                         // fim para encontrar estado
                         // atualizar os dados no ArrayList
-                        temp.setNome(novoNomeUsuario);
-                        temp.setCPF(novocpfUsuario);
-                        temp.setEmail(novoEmailUsuario);
-                        temp.setSenha(novaSenhaUsuario);
-                        temp.setPerfil(perfilA);
+//                        temp.setNome(novoNomeUsuario);
+//                        temp.setCPF(novocpfUsuario);
+//                        temp.setEmail(novoEmailUsuario);
+//                        temp.setSenha(novaSenhaUsuario);
+                        //TODO: [RN05-04] = OK
+                        Perfil perf = new Perfil(perfis.get(perfilNovo).getIdPerfil(),perfis.get(perfilNovo).getNomePerfil(),perfis.get(perfilNovo).getDescricaoPerfil());
+                        temp.getPerfilUsu().add(perf);
 
                         System.out.println("\nUsuario atualizado com sucesso!");
                     }
@@ -1668,6 +1769,7 @@ public class HabilitPro {
     }
 
     private int menuGerenciarPerfil() {
+        //TODO: [RF06] = OK
         Perfil temp;
         String pesquisaPerfil;
         while (true){
@@ -1737,16 +1839,9 @@ public class HabilitPro {
                         System.out.println("\nO Perfil não foi encontrado.");
                     }
                     else{
-                        // vamos excluir este Perfil. Atenção: Se houver usuario relacionadas
-                        // a este Perfil, então a exclusão destes deverá ser feita primeiro
-                        if(temp.getUsuarios(usuarios).size() > 0){
-                            System.out.println("\nOps! Este Perfil está relacionado a " + temp.getUsuarios(usuarios).size() + " usuario. Exclua eles primeiro.");
-                        }
-                        else{
                             perfis.remove(temp);
                             System.out.println("\nPerfil foi excluído com sucesso.");
                         }
-                    }
 
                     break;
 
@@ -1764,7 +1859,6 @@ public class HabilitPro {
                         System.out.println("\nId:           \t" + temp.getIdPerfil());
                         System.out.println("Nome:           \t" + temp.getNomePerfil());
                         System.out.println("Descrição:      \t" + temp.getDescricaoPerfil());
-                        System.out.println("Qt Usuários:    \t" + temp.getUsuarios(usuarios).size());
                         System.out.println("==========================================================");
                         System.out.println("\nInforme os novos dados:");
                         System.out.print("\nNovo Nome do Perfil: ");

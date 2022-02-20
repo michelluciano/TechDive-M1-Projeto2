@@ -13,8 +13,8 @@ public class Trilha {
     private List<Modulo> modulos;
     private int satisfacao;
     private String anotacoes;
-    public static int serialTrilha =0;
-    public static int serialOcupacao =0; // utilizado para criar o nome da trilha
+    public static int serialTrilha = 0;
+    public static int serialOcupacao = 0; // utilizado para criar o nome da trilha
 
     // construtor trilha com satisfação
     public Trilha(int idTrilha, Empresa nomneEmpresa, String ocupacao, String nome, String apelido, int satisfacao, String anotacoes) {

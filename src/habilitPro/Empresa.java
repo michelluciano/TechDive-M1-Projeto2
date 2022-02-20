@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Empresa {
-
+//TODO: [RF01] = ok
     private int idEmpresa;
     private String nomeEmpresa;
     private String CNPJEmpresa;
@@ -13,7 +13,7 @@ public class Empresa {
     private SegmentoEmpresa segmentoEmpresa;
     private Cidade cidadeEmpresa;
     private RegionalSenai regionalSenai;
-    private ArrayList<Trilha> trilha = new ArrayList<>(); // trilhas associdas a esta conta
+    private ArrayList<Trilha> trilhaEmp = new ArrayList<>(); // trilhas associdas a esta conta
     public static int serialEmpresa;
 
     public Empresa() {
@@ -43,9 +43,13 @@ public class Empresa {
         this.regionalSenai = regionalSenai;
     }
 
-    public ArrayList<Trilha> getTrilha() {return trilha; }
+    public ArrayList<Trilha> getTrilhaEmp() {
+        return trilhaEmp;
+    }
 
-    public void setTrilha(ArrayList<Trilha> trilha) {this.trilha = trilha;}
+    public void setTrilhaEmp(ArrayList<Trilha> trilhaEmp) {
+        this.trilhaEmp = trilhaEmp;
+    }
 
     public int getIdEmpresa() {return idEmpresa;}
 

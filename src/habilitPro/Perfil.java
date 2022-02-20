@@ -7,8 +7,7 @@ public class Perfil {
     private int idPerfil;
     private String nomePerfil;
     private String descricaoPerfil;
-    private Usuario usuario;
-    public static int serialPerfil =0;
+    public static int serialPerfil = 0;
 
 
     public Perfil(int idPerfil, String nomePerfil, String descricaoPerfil) {
@@ -17,21 +16,21 @@ public class Perfil {
         this.descricaoPerfil = descricaoPerfil;
     }
 
-    public ArrayList<Usuario> getUsuarios(ArrayList<Usuario> usuarios){
-        ArrayList<Usuario> usuariosTemp = new ArrayList<>();
+//    public ArrayList<Usuario> getUsuarios(ArrayList<Usuario> usuarios){
+//        ArrayList<Usuario> usuariosTemp = new ArrayList<>();
+//
+//        for (int i = 0; i< usuarios.size(); i++){
+//            Usuario usuario = usuarios.get(i);
+//            if (usuario.getPerfil().equals(this)){
+//                usuariosTemp.add(usuario);
+//            }
+//        }
+//        return usuariosTemp;
+//    } // fim array
 
-        for (int i = 0; i< usuarios.size(); i++){
-            Usuario usuario = usuarios.get(i);
-            if (usuario.getPerfil().equals(this)){
-                usuariosTemp.add(usuario);
-            }
-        }
-        return usuariosTemp;
-    } // fim array
-
-    public Usuario getUsuario() { return usuario;}
-
-    public void setUsuario(Usuario usuario) {this.usuario = usuario;}
+//    public Usuario getUsuario() { return usuario;}
+//
+//    public void setUsuario(Usuario usuario) {this.usuario = usuario;}
 
     public int getIdPerfil() {
         return idPerfil;
@@ -63,8 +62,7 @@ public class Perfil {
         return "Perfil{" +
                 "idPerfil=" + idPerfil +
                 ", nomePerfil='" + nomePerfil + '\'' +
-                ", descricaoPerfil='" + descricaoPerfil + '\'' +
-                ", usuario=" + usuario +
+                ", descricaoPerfil='" + descricaoPerfil +
                 '}';
     }
 }
