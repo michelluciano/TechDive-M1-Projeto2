@@ -1,7 +1,6 @@
 package habilitPro;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Trilha {
 
@@ -10,7 +9,7 @@ public class Trilha {
     private String ocupacao;
     private String nome;
     private String apelido;
-    private List<Modulo> modulos;
+    private ArrayList<Modulo> modulosTri = new ArrayList<>();
     private int satisfacao;
     private String anotacoes;
     public static int serialTrilha = 0;
@@ -34,6 +33,22 @@ public class Trilha {
         this.ocupacao = ocupacao;
         this.nome = nome;
         this.apelido = apelido;
+    }
+
+    public Empresa getNomeEmpresa() {
+        return nomeEmpresa;
+    }
+
+    public void setNomeEmpresa(Empresa nomeEmpresa) {
+        this.nomeEmpresa = nomeEmpresa;
+    }
+
+    public ArrayList<Modulo> getModulosTri() {
+        return modulosTri;
+    }
+
+    public void setModulosTri() {
+        this.modulosTri = modulosTri;
     }
 
     public int getIdTrilha() {
@@ -74,14 +89,6 @@ public class Trilha {
 
     public void setApelido(String apelido) {
         this.apelido = apelido;
-    }
-
-    public List<Modulo> getModulos() {
-        return modulos;
-    }
-
-    public void setModulos(List<Modulo> modulos) {
-        this.modulos = modulos;
     }
 
     public int getSatisfacao() {

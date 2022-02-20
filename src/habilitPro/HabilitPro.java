@@ -934,8 +934,8 @@ public class HabilitPro {
                         System.out.println("Cidade:           \t" + (temp.getCidadeEmpresa().getDescCidade()));
                         System.out.println("Estado:           \t" + (temp.getCidadeEmpresa().getEstado().getUfEstado()));
                         System.out.println("Regional SENAI:   \t" + (temp.getRegionalSenai().getDescRegionalSenai()));
-                        System.out.println("Trilha            \t" + temp.getTrilhaEmp());
-                        //System.out.println("Qt Perfil:    \t" + temp.getPerfilUsu().size());
+                        //System.out.println("Trilha            \t" + temp.getTrilhaEmp().);
+
                         System.out.println("==========================================================");
 
                         System.out.println("Vamos adicionar uma Trilha a empresa "+temp.getNomeEmpresa());
@@ -1004,6 +1004,7 @@ public class HabilitPro {
             System.out.println("2 - Listar Trilha");
             System.out.println("3 - Pesquisar Trilha");
             System.out.println("4 - Excluir Trilha");
+            System.out.println("5 - Atualizar e associar um módulo ");
             System.out.println("6 - Voltar Menu Anterior");
             System.out.print("Sua opção: ");
             int opcao = Integer.parseInt(entrada.nextLine()); // lê a opção do usuário
@@ -1033,9 +1034,11 @@ public class HabilitPro {
                     String ocupacao= entrada.nextLine();
 
                     Trilha.serialTrilha++;
+                    //TODO: [RN02-01] = ok
                     String nomeTrilha = (ocupacao+empresa.getNomeEmpresa()+Trilha.serialOcupacao+AnoCorrente.isAno());
                     nomeTrilha = nomeTrilha.replaceAll(" ", "");
                     Trilha.serialOcupacao++;
+                    //TODO: [RN02-02] = ok
                     String apelidoTrilha = (ocupacao+Trilha.serialOcupacao);
 
                     Trilha tri = new Trilha(Trilha.serialTrilha,empresa,ocupacao,nomeTrilha,apelidoTrilha,0,"");
@@ -1060,6 +1063,14 @@ public class HabilitPro {
                             System.out.println("Apelido da Tilha   \t" + temp.getApelido());
                             System.out.println("Grau de Satisfação \t" + temp.getSatisfacao());
                             System.out.println("Anotações da Tilha \t" + temp.getAnotacoes());
+                            System.out.print("Módulos            \t");
+                            if(temp.getModulosTri() == null){
+                                System.out.println(" 0 ");
+                                }else {
+                                for (int j = 0; j < temp.getModulosTri().size(); j++) {
+                                    System.out.print(temp.getModulosTri().get(j).getNome() + " | ");
+                                }
+                            }
                             System.out.println("-------------------------------------------------------\n");
                         }
                     }
@@ -1099,10 +1110,8 @@ public class HabilitPro {
                     }
                     break;
 
-                case 5: //atualizar cidade
-                    Usuario usuarioTrilha = null;
-                    String novasatisfacao;
-                    String novaanotacoesTrilha;
+                case 5: //atualizar trilha
+
                     System.out.print("\nInforme o ID ou nome da trilha: ");
                     pesquisaTrilha = entrada.nextLine();
                     // metodo pesquisa
@@ -1119,35 +1128,23 @@ public class HabilitPro {
                         System.out.println("Apelido da Tilha   \t" + temp.getApelido());
                         System.out.println("Grau de Satisfação \t" + temp.getSatisfacao());
                         System.out.println("Anotações da Tilha \t" + temp.getAnotacoes());
-                        System.out.println("===========================================================");
-                        System.out.print("\nNovo Nome da Cidade: ");
-                        String novoDescCidade = entrada.nextLine();
-
-                        // para cadastrar uma nova trilha precisa de uma Empresa
-                        empresa = null; // empresa
-                        while (empresa == null) {
-                            System.out.print("Informe o id, CNPJ ou nome da Empresa: ");
-                            String pesquisaEmpresa = entrada.nextLine();
-                            // método pesquisa
-                            empresa = pesquisarEmpresa(pesquisaEmpresa);
-                            if (empresa == null) { // Estado não encotrado
-                                System.out.print("\nEmpresa não encontrada.\n\nDigite 1 para pesquisar novamente ou 2 para voltar ao menu anterior: ");
-                                int opcaoTemp = Integer.parseInt(entrada.nextLine());
-                                if (opcaoTemp == 2) {
-                                    return 1; // volta para o menu anterior
-                                }
+                        System.out.print("Módulos            \t");
+                        if(temp.getModulosTri() == null){
+                            System.out.println(" 0 ");
+                        }else {
+                            for (int j = 0; j < temp.getModulosTri().size(); j++) {
+                                System.out.print(temp.getModulosTri().get(j).getNome() + " | ");
                             }
                         }
-                        System.out.println("Empresa selecionado: " + empresa.getNomeEmpresa()+ " - " + empresa.getCNPJEmpresa());
-                        // fim para encontrar estado
+                        System.out.println("===========================================================");
 
-                        System.out.println("Digite o cargo/Ocupação:");
-                        String novaocupacao= entrada.nextLine();
-                        System.out.print("Digite o Grau de Satisfação:\n1 - 2 - 3 - 4 - 5");
-                        novasatisfacao = entrada.nextLine();
+
+
                         //TODO: [RN02-05] = OK
 //                        if(usuarioTrilha.getPerfilUsu()).equals("Operacional")){
                             //TODO [RN02-04] = OK
+//                        System.out.print("Digite o Grau de Satisfação:\n1 - 2 - 3 - 4 - 5");
+//                        String novasatisfacao = entrada.nextLine();
 //                            while(ValidaCampoInt.validaInt(novasatisfacao)  == false){
 //                                System.out.println("\nO valor digitado é inválido!!");
 //                                System.out.print("\nDigite um valor válido: ");
@@ -1161,9 +1158,41 @@ public class HabilitPro {
 //                        }
 
                         // atualiza
-                        temp.setOcupacao(novaocupacao);
+                        System.out.println("Vamos adicionar um Módulo a Trilha "+temp.getNome());
 
-                        System.out.println("\nA Trilha atualizada com sucesso");
+                        Modulo moduloList = null; // modulo
+                        if (modulos.isEmpty()) {
+                            System.out.println("\nNão há nenhum módulo cadastrado. Cadastre um modulo e tente novamente");
+                        } else {
+                            for (int i = 0; i < modulos.size(); i++) {
+                                moduloList = modulos.get(i); //
+                                System.out.println(moduloList.getIdModulo() + " - Módulo: " + moduloList.getNome());
+                            }
+                        }
+                        System.out.print("Informe o numero do módulo: ");
+                        int moduloNovo = entrada.nextInt();
+                        entrada.nextLine();
+                        moduloNovo--;
+                        System.out.println("Módulo selecionado: " + modulos.get(moduloNovo).getIdModulo() + modulos.get(moduloNovo).getNome());
+                        // fim para encontrar modulo
+                        //TODO: [RN02-03] = OK
+                        System.out.println("chegou aqui");
+                        //TODO: [RN03-01] = ok
+                        Modulo mod = new Modulo(
+                                modulos.get(moduloNovo).getIdModulo(),
+                                modulos.get(moduloNovo).getTrilha(),
+                                modulos.get(moduloNovo).getNome(),
+                                modulos.get(moduloNovo).getHabilidades(),
+                                modulos.get(moduloNovo).getTarefaValidacao(),
+                                modulos.get(moduloNovo).getPrazoLimite(),
+                                modulos.get(moduloNovo).getStatus());
+
+                        System.out.println("chegou aqui 1 - "+ mod.getIdModulo()+" -"+mod.getNome());
+                        temp.getModulosTri().add(mod);
+                        System.out.println("chegou aqui 2");
+
+                        System.out.println("\nO Módulo "+mod.getNome()+" foi Associada A TRILHA "+ mod.getTrilha().getNome()+" com sucesso!");
+
                     }
                     break;
                 case 6:
@@ -1215,7 +1244,7 @@ public class HabilitPro {
                     String nomeTrabalhador = entrada.nextLine();
                     System.out.print("\nCPF: ");
                     String CPFTrabalhador = entrada.nextLine();
-                    //TODO : valida CPF ( RN04-016)
+                    //TODO : [RN04-016] valida CPF
                     while(ValidarCPF.isCPF(CPFTrabalhador) == false){
                         System.out.println("\nO CPF digitado é inválido!!");
                         System.out.print("\nDigite um CPF válido: ");
@@ -1380,7 +1409,7 @@ public class HabilitPro {
 
 
                     Modulo.serialModulo++;
-                    //TODO:
+
                     Modulo mod = new Modulo(Modulo.serialModulo,trilha,nomemodulo,habModulo, tarValModulo,prazoLimiteModulo,EnumTotal.NAOINICIADO.getDisplayName());
                     modulos.add(mod);
 
@@ -1397,6 +1426,7 @@ public class HabilitPro {
                             temp = modulos.get(i); //
                             System.out.println("Id:              \t" + temp.getIdModulo());
                             System.out.println("Nome:            \t" + temp.getNome());
+                            System.out.println("Nome trilha:     \t" + temp.getTrilha().getNome());
                             System.out.println("Status:          \t" + temp.getStatus());
                             System.out.println("Habilidades:     \t" + temp.getHabilidades());
                             System.out.println("Tarefa:          \t" + temp.getTarefaValidacao());
@@ -1473,30 +1503,34 @@ public class HabilitPro {
                         System.out.print("\nPrazo Limite (em dias): ");
                         int novoprazoLimiteModulo = entrada.nextInt();
 
-                        System.out.print("Digite o Status atual:\n1 - Curso não iniciado\n2 - Curso em adamento\n3 - Em fase de avaliação\n4 - Fase de avaliação finalizada\n");
-
-                        int opStatus = entrada.nextInt();
-                        entrada.nextLine();
-                            if(opStatus == 1){
-                                temp.setStatus(EnumTotal.NAOINICIADO.getDisplayName());
-                            }else if(opStatus == 2){
-                                temp.setStatus(EnumTotal.EMANDAMENTO.getDisplayName());
-                            }else if(opStatus == 3){
-                                temp.setStatus(EnumTotal.FASEAVALIACAO.getDisplayName());
-                            }else if(opStatus == 4){
-                                temp.setStatus(EnumTotal.AVALIACAOFINALIZADA.getDisplayName());
-                            }
-
+                        //TODO [RN03-06] deixei comentado pq ainda nao fiz uma parte de acesso ao sistema.
+//                        Usuario usuAdmin =null;
+//                        if(usuAdmin.getPerfilUsu().get(1).getNomePerfil().equals("Administrador")) {
+//                            System.out.print("Digite o Status atual:\n1 - Curso não iniciado\n2 - Curso em adamento\n3 - Em fase de avaliação\n4 - Fase de avaliação finalizada\n");
+//
+//                            int opStatus = entrada.nextInt();
+//                            entrada.nextLine();
+//                            if (opStatus == 1) {
+//                                temp.setStatus(EnumTotal.NAOINICIADO.getDisplayName());
+//                            } else if (opStatus == 2) {
+//                                temp.setStatus(EnumTotal.EMANDAMENTO.getDisplayName());
+//                            } else if (opStatus == 3) {
+//                                temp.setStatus(EnumTotal.FASEAVALIACAO.getDisplayName());
+//                            } else if (opStatus == 4) {
+//                                temp.setStatus(EnumTotal.AVALIACAOFINALIZADA.getDisplayName());
+//                            }
+//                        }
                         // atualizar os dados no ArrayList
                         temp.setNome(novonomemodulo);
 
                         temp.setHabilidades(novohabModulo);
                         temp.setTarefaValidacao(novotarValModulo);
                         temp.setPrazoLimite(novoprazoLimiteModulo);
+                        //TODO: [RN03-07] = ok
                         if (temp.getStatus().equals(EnumTotal.EMANDAMENTO.getDisplayName())){
                             temp.setDataHoraInicio(OffsetDateTime.now());
-
                         }
+                        //TODO: [RN03-08] = ok
                         if (temp.getStatus().equals(EnumTotal.AVALIACAOFINALIZADA.getDisplayName())){
                             temp.setDataHoraFim(OffsetDateTime.now());
                         }

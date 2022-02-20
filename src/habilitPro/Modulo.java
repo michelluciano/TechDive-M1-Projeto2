@@ -12,7 +12,7 @@ public class Modulo {
     private String nome;
     private String habilidades;
     private String tarefaValidacao;
-    private int prazoLimite = 10; // 10 dias uteis
+    private int prazoLimite = 10; // 10 dias uteis TODO [RN03-03] = ok
     private String status;
     public static int serialModulo = 0;
     private OffsetDateTime dataHoraInicio;
@@ -39,9 +39,7 @@ public class Modulo {
         this.idModulo = idModulo;
     }
 
-    public Trilha getTrilha() {
-        return trilha;
-    }
+    public Trilha getTrilha() { return trilha; }
 
     public void setTrilha(Trilha trilha) {
         this.trilha = trilha;
